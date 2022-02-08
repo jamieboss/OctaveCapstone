@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: rgb(2, 75, 2);
   min-height: 20vh;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,14 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.FavInput {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  grid-column-gap: 120px;
+  grid-row-gap: 20px;
+  justify-content: center;
 }
 
 button:hover, .Selected {

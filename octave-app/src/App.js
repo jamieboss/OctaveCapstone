@@ -4,7 +4,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
 
-
 function App() {
 
   return (
@@ -14,6 +13,23 @@ function App() {
           Octave Capstone
         </p>
       </header>
+
+      <ul>
+        <li><h2>Songs</h2></li>
+        <li><h2>Artists</h2></li>
+        <li><h2>Genres</h2></li>
+      </ul>
+      <div className = "FavInput">
+        <input></input>
+        <input></input>
+        <input></input>
+        <input></input>
+        <input></input>
+        <input></input>
+        <input></input>
+        <input></input>
+        <input></input>
+      </div> 
 
       <div className = "ActivitySelector">
         <h2>What are you doing?</h2>
