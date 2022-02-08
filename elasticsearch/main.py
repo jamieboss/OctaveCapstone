@@ -45,21 +45,46 @@ song_mapping = {
             "album": {
                 "type": "text"
             },
+            "mood": {
+                "type": "double"
+            },
         }
     }
 }
 # Creating Index and Record
 create_index(es, 'songs', song_mapping)
 print(json.dumps(es.indices.get_mapping(index='songs'), indent=1))
-record_object = {'name': 'Blank Space', 'artist': 'Taylor Swift', 'album': '1989'}
+record_object = {'name': 'Blank Space', 'artist': 'Taylor Swift', 'album': '1989', 'mood': 0.5}
 store_record(es, 'songs', record_object)
 print(es.count(index='songs'))
 
 # Searching for records
-search_object = {'query': {'match': {'artist': {'query': 'Taylor Swift'}}}}
+# Search for artist name
+search_object = {'query': {'match': {'artist': 'Taylor Swift'}}}
 results = search(es, 'songs', search_object)
-for i in range(len(results['hits']['hits'])):
-    print(results['hits']['hits'][i]['_source']['name'])
+for i, doc in enumerate(results['hits']['hits']):
+    print(f'Hit {i+1}: {doc["_source"]["name"]}')
+
+# Search for artist and album name (compound query)
+search_object = {'query': {'bool': {'must': [{'match': {'artist': 'Taylor Swift'}}, {'match': {'album': '1989'}}]}}}
+results = search(es, 'songs', search_object)
+for i, doc in enumerate(results['hits']['hits']):
+    print(f'Hit {i+1}: {doc["_source"]["name"]}, {doc["_source"]["album"]}')
+
+search_object = {'query': {'bool': {'must': [{'match': {'artist': 'Taylor Swift'}}, {'match': {'album': 'Red'}}]}}}
+results = search(es, 'songs', search_object)
+if not results['hits']['hits']:
+    print('No matches found')
+for i, doc in enumerate(results['hits']['hits']):
+    print(f'Hit {i+1}: {doc["_source"]["name"]}, {doc["_source"]["album"]}')
+
+# Search for range
+search_object = {'query': {'range': {'mood': {'gte': 0.6, 'lte': 0.8}}}}
+results = search(es, 'songs', search_object)
+if not results['hits']['hits']:
+    print('No matches found')
+for i, doc in enumerate(results['hits']['hits']):
+    print(f'Hit {i+1}: {doc["_source"]["name"]}, {doc["_source"]["mood"]}')
 
 # Deleting index
 delete_index(es, 'songs')
