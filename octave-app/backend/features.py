@@ -8,7 +8,6 @@ action_features = {
         'DRIVING': {'acousticness': 0.125, 'danceability': 0.5, 'energy': 0.5, 'speechiness': 0.25, 'tempo': 125, 'valence': 0.5}, 
         'DANCING': {'acousticness': 0.25, 'danceability': 1, 'energy': 0.5, 'speechiness': 0.25, 'tempo': 115, 'valence': 0.75}, 
         'RELAXING': {'acousticness': 0.75, 'danceability': 0, 'energy': 0, 'speechiness': 0.5, 'tempo': 80, 'valence': 1},
-        'CLEANING': {'acousticness': 0.5, 'danceability': 0.25, 'energy': 0.25, 'speechiness': 0.33, 'tempo': 100, 'valence': 0.75}
         }
 
 # All options for the mood choice and its associated song features.
@@ -16,15 +15,10 @@ mood_features = {
         'ANGRY': {'acousticness': 0, 'danceability': 0.5, 'energy': 0.875, 'speechiness': 0.125, 'tempo': 150, 'valence': 0.125}, 
         'ANXIOUS': {'acousticness': 0.5, 'danceability': 0.33, 'energy': 0.125, 'speechiness': 0, 'tempo': 75, 'valence': 1}, 
         'ENERGIZED': {'acousticness': 0.125, 'danceability': 1, 'energy': 1, 'speechiness': 0.125, 'tempo': 145, 'valence': 0.5}, 
-        'AMUSED': {'acousticness': 0.33, 'danceability': 0.25, 'energy': 0.33, 'speechiness': 0.5, 'tempo': 115, 'valence': 0.75}, 
-        'MELANCHOLY': {'acousticness': 0.5, 'danceability': 0.125, 'energy': 0.125, 'speechiness': 0.25, 'tempo': 80, 'valence': 0}, 
-        'EMPOWERED': {'acousticness': 0.25, 'danceability': 0.875, 'energy': 0.75, 'speechiness': 0.33, 'tempo': 95, 'valence': 0.875}, 
-        'DEFIANT': {'acousticness': 0.125, 'danceability': 0.66, 'energy': 0.75, 'speechiness': 0.33, 'tempo': 120, 'valence': 0.33}, 
-        'FEARFUL': {'acousticness': 0.25, 'danceability': 0.5, 'energy': 0.66, 'speechiness': 0.5, 'tempo': 100, 'valence': 0.875}, 
-        'CHEERFUL': {'acousticness': 0.5, 'danceability': 0.75, 'energy': 0.5, 'speechiness': 0.25, 'tempo': 110, 'valence': 1}, 
-        'CHARMING': {'acousticness': 0.5, 'danceability': 0.75, 'energy': 0.5, 'speechiness': 0.25, 'tempo': 110, 'valence': 1}, 
+        'JOYFULL': {'acousticness': 0.33, 'danceability': 0.25, 'energy': 0.33, 'speechiness': 0.5, 'tempo': 115, 'valence': 0.75}, 
+        'SAD': {'acousticness': 0.5, 'danceability': 0.125, 'energy': 0.125, 'speechiness': 0.25, 'tempo': 80, 'valence': 0}, 
         'PEACEFUL': {'acousticness': 1, 'danceability': 0.125, 'energy': 0, 'speechiness': 0.66, 'tempo': 60, 'valence': 0.66}, 
-        'DREAMY': {'acousticness': 0.66, 'danceability': 0, 'energy': 0.25, 'speechiness': 0.5, 'tempo': 85, 'valence': 0.75}
+        'TIRED': {'acousticness': 0.66, 'danceability': 0, 'energy': 0.25, 'speechiness': 0.5, 'tempo': 85, 'valence': 0.75}
         }
 
 
