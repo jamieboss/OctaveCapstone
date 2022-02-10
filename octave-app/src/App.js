@@ -9,17 +9,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Octave Capstone
-        </p>
+        <h1> Octave Capstone</h1>
+        <p>Custom Spotify Playlist Generator</p>
       </header>
 
-      <ul>
-        <li><h2>Songs</h2></li>
-        <li><h2>Artists</h2></li>
-        <li><h2>Genres</h2></li>
-      </ul>
       <div className = "FavInput">
+        <h3>Favorite Songs</h3>
+        <h3>Favorite Artists</h3>
+        <h3>Favorite Genres</h3>
         <input></input>
         <input></input>
         <input></input>
@@ -42,15 +39,6 @@ function App() {
 
       <div className = "MoodSelector">
         <h2>How are you feeling?</h2>
-        <ul>
-          <li>anxious</li>
-          <li>joyfyl</li>
-          <li>energized</li>
-          <li>peaceful</li>
-          <li>sad</li>
-          <li>tired</li>
-          <li>angry</li>
-        </ul>
         <div className = "Slider">
           <ColorPicker/>
         </div>

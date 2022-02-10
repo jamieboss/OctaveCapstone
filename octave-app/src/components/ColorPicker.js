@@ -4,7 +4,7 @@ import reactCSS from 'reactcss'
 
 class ColorPicker extends React.Component {
     state = {
-      word: 'Select a Mood',
+      word: 'peaceful',
       color: {
         r: '0',
         g: '255',
@@ -46,7 +46,16 @@ class ColorPicker extends React.Component {
 
       return (
         <div>
-          <p style={ styles.color }>{this.state.word}</p>
+          <h4 style={ styles.color }>{this.state.word}</h4>
+          <ul>
+            <li>anxious</li>
+            <li>joyfyl</li>
+            <li>energized</li>
+            <li>peaceful</li>
+            <li>sad</li>
+            <li>tired</li>
+            <li>angry</li>
+          </ul>
           <HuePicker color={ this.state.color } onChange={ this.onChange } />
         </div>
       )

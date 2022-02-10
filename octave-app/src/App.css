@@ -4,29 +4,30 @@
 
 .App-header {
   background-color: rgb(2, 75, 2);
-  min-height: 20vh;
+  min-height: 32vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(12px + 2vmin);
   color: white;
+}
+
+.App-header h1 {
+  font-weight: bold;
+  font-size: calc(32px + 2vmin);
+}
+
+h2, h3{
+  padding-top: 36px;
 }
 
 .FavInput {
   display: grid;
-  grid-template-columns: repeat(3, 300px);
-  grid-column-gap: 120px;
-  grid-row-gap: 20px;
+  grid-template-columns: repeat(3, 240px);
+  grid-column-gap: 60px;
+  grid-row-gap:24px;
   justify-content: center;
-}
-
-button:hover, .Selected {
-  background-color: rgb(2, 75, 2);
-}
-
-.Selected {
-  color: white;
 }
 
 button {
@@ -34,33 +35,38 @@ button {
   display: inline-block;
   height: 60px;
   width: 120px;
-  margin: 10px!important;
+  margin: 12px!important;
+  border-radius: 12px!important;
 }
 
-.Slider {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
-.hue-picker {
-  width: 1000px!important;
+button:hover, .Selected {
+  background-color: rgb(2, 75, 2);
+  border-width: 6px;
+  color: white;
 }
 
 ul {
   display: flex;
   justify-content: space-between;
-  max-width: 1000px;
   padding-left: 20px!important;
   padding-right: 20px!important;
-  margin: auto;
-  margin-bottom: 0px!important;
+  margin-bottom: 6px!important;
 }
 li {
   display: inline-block;
   list-style-type: none;
 }
 
-h2 {
-  padding: 20px;
+.Slider {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+.hue-picker {
+  width: 900px!important;
+}
+
+.Generate button {
+  width: 180px;
 }
