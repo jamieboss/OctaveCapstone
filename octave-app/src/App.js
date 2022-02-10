@@ -33,8 +33,16 @@ function collectData() {
   }
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
-  //Return all info
-  console.log(userData);
+
+  //Display pop-up
+  var modal = document.getElementById("myModal");
+  modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
+  modal.style.display = "block";
+}
+
+function closePopup() {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "none";
 }
 
 function App() {
@@ -80,6 +88,15 @@ function App() {
       <div className = "Generate">
         <button onClick={collectData}>Generate Playlist</button>
       </div>
+
+      <div id="myModal" className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={closePopup}>&times;</span>
+          <h4>User Data</h4>
+          <p></p>
+        </div>
+      </div>
+      
     </div>
   );
 }
