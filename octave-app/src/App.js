@@ -4,12 +4,45 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
 
+let userData = {
+  favSongs: [],
+  favArtists: [],
+  favGenres: [],
+  activities: [],
+  mood: "peaceful",
+}
+
+const getSong = (event, i)=>{
+  userData.favSongs[i] = event.target.value;
+}
+
+const getArtist = (event, i)=>{
+  userData.favArtists[i] = event.target.value;
+}
+
+const getGenre = (event, i)=>{
+  userData.favGenres[i] = event.target.value;
+}
+
+function collectData() {
+  //Get activities
+  let activityButtons = document.getElementsByClassName("Selected");
+  userData.activities = [];
+  for (let i=0; i<activityButtons.length; i++) {
+    userData.activities.push(activityButtons[i].id)
+  }
+  //Get mood
+  userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
+  //Return all info
+  console.log(userData);
+}
+
 function App() {
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1> Octave Capstone</h1>
+        <h1>Octave</h1>
         <p>Custom Spotify Playlist Generator</p>
       </header>
 
@@ -17,15 +50,15 @@ function App() {
         <h3>Favorite Songs</h3>
         <h3>Favorite Artists</h3>
         <h3>Favorite Genres</h3>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
-        <input></input>
+        <input onChange={(val) => getSong(val, 0)}></input>
+        <input onChange={(val) => getArtist(val, 0)}></input>
+        <input onChange={(val) => getGenre(val, 0)}></input>
+        <input onChange={(val) => getSong(val, 1)}></input>
+        <input onChange={(val) => getArtist(val, 1)}></input>
+        <input onChange={(val) => getGenre(val, 1)}></input>
+        <input onChange={(val) => getSong(val, 2)}></input>
+        <input onChange={(val) => getArtist(val, 2)}></input>
+        <input onChange={(val) => getGenre(val, 2)}></input>
       </div> 
 
       <div className = "ActivitySelector">
@@ -45,7 +78,7 @@ function App() {
       </div>
 
       <div className = "Generate">
-        <button>Generate Playlist</button>
+        <button onClick={collectData}>Generate Playlist</button>
       </div>
     </div>
   );
