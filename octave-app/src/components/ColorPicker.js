@@ -46,7 +46,7 @@ class ColorPicker extends React.Component {
 
       return (
         <div>
-          <h4 style={ styles.color }>{this.state.word}</h4>
+          <h4 className = "Mood" style={ styles.color }>{this.state.word}</h4>
           <ul>
             <li>anxious</li>
             <li>joyfyl</li>
