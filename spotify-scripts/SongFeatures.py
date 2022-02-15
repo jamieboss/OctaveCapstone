@@ -15,30 +15,33 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, client_secre
 #read from database
 df = pd.read_csv("artist-uris.csv.csv")
 df.head
-IDs = df.iloc[:,1]
+#gets list of all spotify artist ids,
+#IDs = df.iloc[:,1]
 
-#temporary Artist id assignment from database
-ArtistID = IDs[1173]
-artist = sp.artist(ArtistID)
-artistName = artist['name']
-print(artistName)
+#tempooorary list oof spotify artisst ids
+IDs = ["spotify:artist:3ApUX1o6oSz321MMECyIYd?si=9JtOb6KKSNm1boeBYvyTFg"]
 
+for ArtistID in IDs:
+    artist = sp.artist(ArtistID)
+    artistName = artist['name']
+    print(artistName)
+    #get all of artists albums
+    albums = sp.artist_albums(artist['id'])['items']
+    album_ids = []
+    #get albums from artist
+    for album in albums:
+        album_ids.append(album['id'])
+    #get tracks from albums
+    track_list = sp.albums(album_ids)['albums']
+    #retrieve name and features of songs
+    for i in range(len(track_list)):
+        tracks =  track_list[i]['tracks']['items']
+        for j in range(len(tracks)):
+            
+            name = tracks[j]['name']
+            uri = tracks[j]['uri']
+            trackFeats = sp.audio_features(uri)
+            print(name)
+            print(trackFeats)
+            print()
 
-#get all of artists albums
-albums = sp.artist_albums(artist['id'])['items']
-album_ids = []
-#get albums from artist
-for album in albums:
-    album_ids.append(album['id'])
-#get tracks from albums
-track_list = sp.albums(album_ids)['albums']
-#retrieve name and featuures of songs
-for i in range(5):
-    tracks = tracks = track_list[i]['tracks']['items']
-    for j in range(3):
-        name = tracks[j]['name']
-        uri = tracks[j]['uri']
-        trackFeats = sp.audio_features(uri)
-        print(name)
-        print(trackFeats)
-        print()
