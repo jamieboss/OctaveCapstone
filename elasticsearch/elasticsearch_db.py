@@ -26,7 +26,3 @@ class ElasticsearchDB:
         res = self.es.search(index=index_name, body=json.dumps(query))
         return res
 
-    def delete_index(self, index_name):
-        logging.info(f'Deleting index {index_name}.')
-        self.es.indices.delete(index_name, ignore=[400, 404])
-
