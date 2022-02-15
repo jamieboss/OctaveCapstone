@@ -18,8 +18,18 @@
   font-size: calc(48px + 2vmin);
 }
 
+.intro {
+  max-width: 900px;
+  margin: auto;
+  margin-top: 36px;
+}
+
 h2, h3{
   padding-top: 36px;
+}
+
+h4 {
+  padding-top: 12px;
 }
 
 .FavInput {

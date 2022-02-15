@@ -10,6 +10,8 @@ let userData = {
   favGenres: [],
   activities: [],
   mood: "peaceful",
+  theme: " ",
+  number: 20,
 }
 
 const getSong = (event, i)=>{
@@ -22,6 +24,17 @@ const getArtist = (event, i)=>{
 
 const getGenre = (event, i)=>{
   userData.favGenres[i] = event.target.value;
+}
+
+const getTheme = (event) => {
+  userData.theme = event.target.value;
+}
+
+const getNum = (event) => {
+  userData.number = parseInt(event.target.value);
+  if (!userData.number) {
+    userData.number = 20;
+  }
 }
 
 function collectData() {
@@ -54,6 +67,7 @@ function App() {
         <p>Custom Spotify Playlist Generator</p>
       </header>
 
+      <h5 className="intro">Welcome to Octave, a Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
       <div className = "FavInput">
         <h3>Favorite Songs</h3>
         <h3>Favorite Artists</h3>
@@ -84,6 +98,11 @@ function App() {
           <ColorPicker/>
         </div>
       </div>
+
+      <h4>Add a specific theme:</h4>
+      <input onChange={(val) => getTheme(val)}></input>
+      <h4>Number of songs:</h4>
+      <input onChange={(val) => getNum(val)}></input>
 
       <div className = "Generate">
         <button onClick={collectData}>Generate Playlist</button>
