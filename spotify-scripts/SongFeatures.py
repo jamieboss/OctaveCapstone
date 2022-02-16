@@ -1,9 +1,12 @@
+import os
 import numpy as np
 import pandas as pd
 from SpotifyOAuth import sp
 
 #read from database
-df = pd.read_csv('../artist-uris.csv')
+script_dir = os.getcwd()
+file = 'artist-uris.csv'
+df = pd.read_csv(os.path.normcase(os.path.join(script_dir, file)))
 df.head
 #gets list of all spotify artist ids,
 #IDs = df.iloc[:,1]
