@@ -63,7 +63,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Octave</h1>
+        <img src="./octavelogo.png" alt = "logo" width="480px"/>
         <p>Custom Spotify Playlist Generator</p>
       </header>
 
