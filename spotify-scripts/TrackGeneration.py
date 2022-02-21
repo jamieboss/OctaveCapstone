@@ -1,4 +1,5 @@
 import random
+from matplotlib import artist
 import numpy as np
 from SpotifyOAuth import sp
 
@@ -47,7 +48,7 @@ def artistRelatedTracks(artistId):
                 if a['id'] not in relatedArtistIds:
                     relatedArtistIds.append(a['id'])
         
-    relatedArtistIds = random.sample(relatedArtistIds, 5)
+    relatedArtistIds = random.sample(relatedArtistIds, 10)
 
     for artistId in relatedArtistIds:
         # get all of the artists albums
@@ -68,7 +69,7 @@ def artistRelatedTracks(artistId):
                 randomTracks = randomTracks + getRandomTracks(tracks)
         else:
             print("Only one album :(")
-            tracks = albums['tracks']['items']
+            tracks = albums[0]['tracks']['items']
             randomTracks = randomTracks + getRandomTracks(tracks)
 
     # makes sure all tracks in the list are unique
@@ -76,5 +77,12 @@ def artistRelatedTracks(artistId):
 
 # this is where we will take input from the web app for liked artists to find similar ones
 steveLacy = "spotify:artist:57vWImR43h4CaDao012Ofp"
-steveSongs = artistRelatedTracks(steveLacy)
-print(steveSongs)
+dmx = "spotify:artist:1HwM5zlC5qNWhJtM00yXzG"
+ledZeppelin = "spotify:artist:36QJpDe2go2KgaRleHCDTp"
+duaLipa = "spotify:artist:6M2wZ9GZgrQXHCFfjv46we"
+# steveSongs = artistRelatedTracks(steveLacy)
+dmxSongs = artistRelatedTracks(dmx)
+ledSongs = artistRelatedTracks(ledZeppelin)
+duaSongs = artistRelatedTracks(duaLipa)
+
+songList = np.unique([*dmxSongs, *ledSongs, *duaSongs])
