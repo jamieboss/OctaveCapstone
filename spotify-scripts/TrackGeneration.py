@@ -34,7 +34,7 @@ def getRandomTracks(tracks):
 def artistRelatedTracks(artistId):
     randomTracks = []
     # random depth search for related artists to possibly find unlistened to music
-    mostSimilarArtists = getRelatedArtists(steveLacy, 0, NUM_INIT_ARTISTS)
+    mostSimilarArtists = getRelatedArtists(artistId, 0, NUM_INIT_ARTISTS)
     # create a depth map for how deep we will search for each artist
     artistDepths = [random.randint(0,2) for i in range(len(mostSimilarArtists))]
     # list of ids for all of the related artists
