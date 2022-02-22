@@ -3,6 +3,7 @@ import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
+import APIService from './components/APIService';
 
 let userData = {
   favSongs: [],
@@ -12,6 +13,7 @@ let userData = {
   mood: "peaceful",
   theme: " ",
   number: 20,
+  PostResponse: " "
 }
 
 const getSong = (event, i)=>{
@@ -47,7 +49,14 @@ function collectData() {
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
 
-  //Display pop-up
+  //Send to flask
+  APIService.InsertQuery(userData)
+  .then((response) => openPopup(response))
+  .catch(error => console.log('error', error))
+}
+
+function openPopup(response) {
+  userData.PostResponse=response.message;
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.style.display = "block";
@@ -63,11 +72,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Octave</h1>
-        <p>Custom Spotify Playlist Generator</p>
+        <img src="./octavelogo.png" alt = "logo" width="480px"/>
       </header>
 
-      <h5 className="intro">Welcome to Octave, a Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
+      <h5 className="intro">Welcome to Octave, a custom Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
       <div className = "FavInput">
         <h3>Favorite Songs</h3>
         <h3>Favorite Artists</h3>
