@@ -5,7 +5,7 @@ import features
 import requests
 import os
 from flask import Flask, redirect, url_for
-
+from flask_cors import cross_origin
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
