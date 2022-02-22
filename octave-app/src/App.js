@@ -13,6 +13,7 @@ let userData = {
   mood: "peaceful",
   theme: " ",
   number: 20,
+  PostResponse: " "
 }
 
 const getSong = (event, i)=>{
@@ -48,15 +49,17 @@ function collectData() {
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
 
-  //Display pop-up
+  //Send to flask
+  APIService.InsertQuery(userData)
+  .then((response) => openPopup(response))
+  .catch(error => console.log('error', error))
+}
+
+function openPopup(response) {
+  userData.PostResponse=response.message;
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.style.display = "block";
-
-  //Send to flask
-  APIService.InsertQuery(userData)
-  .then((response) => console.log(response))
-  .catch(error => console.log('error', error))
 }
 
 function closePopup() {
