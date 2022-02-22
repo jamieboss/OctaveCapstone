@@ -9,7 +9,11 @@
 
 ## To run flask:
 `virtualenv flask`
+
 `cd flask`
+
 `source bin/activate`
+
 `pip install flask`
+
 `python app.py`
