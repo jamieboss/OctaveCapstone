@@ -1,4 +1,8 @@
 # This is the README for Team Octave's Capstone Project.
-cd octave-app
 
-npm start
+## To run web app:
+`cd octave-app`  
+`npm start`
+
+## Spotify scripts:
+`pip install spotipy`
