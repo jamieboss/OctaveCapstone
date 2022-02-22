@@ -10,4 +10,8 @@ export default class APIService{
         .then(response => response.json())
         .catch(error => console.log(error))
     }
+
+    static ReceieveQuery(){
+        return fetch('http://localhost:3000/res')
+    }
 }

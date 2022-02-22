@@ -53,6 +53,9 @@ function collectData() {
   APIService.InsertQuery(userData)
   .then((response) => openPopup(response))
   .catch(error => console.log('error', error))
+
+  //TODO; Receive from flask
+  //APIService.ReceiveQuery()
 }
 
 function openPopup(response) {
@@ -123,7 +126,14 @@ function App() {
           <p></p>
         </div>
       </div>
-      
+
+      <div id="myResult" className="result">
+        <div className="result-content">
+          <h4>Result Data</h4>
+          <p>{APIService.ReceieveQuery}</p>
+        </div>
+      </div>
+
     </div>
   );
 }

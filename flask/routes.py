@@ -6,14 +6,10 @@ import requests
 import os
 from flask import Flask, redirect, url_for
 from flask_cors import cross_origin
-<<<<<<< HEAD
-=======
 
 @app.route('/data', methods=['POST'])
 @cross_origin()
 def user_query(response):
->>>>>>> jamie-flask
-
     return jsonify(message="POST request returned")
 
 if __name__ == "__main__":

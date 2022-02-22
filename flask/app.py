@@ -1,5 +1,6 @@
 from flask import Flask, redirect, jsonify, request
 from flask_cors import CORS, cross_origin
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -8,7 +9,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/data', methods=['POST'])
 @cross_origin()
 def user_query():
-    print(request.data)
+    requests.post(url= "localhost:3000/res", data=jsonify(message="This works!"))
     return jsonify(message="working!")
 
 if __name__ == "__main__":
