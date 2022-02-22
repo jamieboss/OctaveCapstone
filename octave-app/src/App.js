@@ -52,11 +52,15 @@ function collectData() {
   //Send to flask
   APIService.InsertQuery(userData)
   .then((response) => openPopup(response))
-  .catch(error => console.log('error', error))
+  .catch(error => openPopup(error))
 }
 
 function openPopup(response) {
-  userData.PostResponse=response.message;
+  if(response) {
+    userData.PostResponse=response.message;
+  }else{
+    userData.PostResponse = "Error";
+  }
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.style.display = "block";
