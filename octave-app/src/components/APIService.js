@@ -1,6 +1,6 @@
 export default class APIService{
     static InsertQuery(body){
-        return fetch('http://localhost:8080/data', {
+        return fetch('http://localhost:5000/data', {
             'method': 'POST',
             headers : {
                 'Content-Type': 'application/json'
@@ -9,9 +9,5 @@ export default class APIService{
         })
         .then(response => response.json())
         .catch(error => console.log(error))
-    }
-
-    static ReceieveQuery(){
-        return fetch('http://localhost:3000/res')
     }
 }

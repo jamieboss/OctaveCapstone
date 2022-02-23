@@ -13,7 +13,7 @@ let userData = {
   mood: "peaceful",
   theme: " ",
   number: 20,
-  PostResponse: " "
+  PostResponse: {}
 }
 
 const getSong = (event, i)=>{
@@ -54,12 +54,20 @@ function collectData() {
   .then((response) => openPopup(response))
   .catch(error => console.log('error', error))
 
-  //TODO; Receive from flask
-  //APIService.ReceiveQuery()
+  displayOutput();
+}
+
+function displayOutput(){
+  var list_str = '<ul>'
+  for (const key in userData.PostResponse) {
+    list_str += '<li><a href="' + userData.PostResponse[key][2] + '">'+ userData.PostResponse[key][0] + ', ' + userData.PostResponse[key][1] + '</a></li>';
+  }
+  list_str += '</ul>'
+  document.getElementById("myResult").innerHTML = list_str;
 }
 
 function openPopup(response) {
-  userData.PostResponse=response.message;
+  userData.PostResponse=response.result;
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.style.display = "block";
@@ -128,10 +136,6 @@ function App() {
       </div>
 
       <div id="myResult" className="result">
-        <div className="result-content">
-          <h4>Result Data</h4>
-          <p>{APIService.ReceieveQuery}</p>
-        </div>
       </div>
 
     </div>
