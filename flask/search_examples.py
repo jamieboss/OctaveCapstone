@@ -296,3 +296,168 @@ bn = {
 }
 
 favSongs = [wfl, hol, bn]
+
+avicii = {
+  "artists": {
+    "href": "https://api.spotify.com/v1/search?query=avicii&type=artist&market=ES&locale=en-US%2Cen%3Bq%3D0.9%2Ces%3Bq%3D0.8&offset=0&limit=1",
+    "items": [
+      {
+        "external_urls": {
+          "spotify": "https://open.spotify.com/artist/1vCWHaC5f2uS3yhpwWbIA6"
+        },
+        "followers": {
+          "href": None,
+          "total": 21394061
+        },
+        "genres": [
+          "dance pop",
+          "edm",
+          "pop",
+          "pop dance"
+        ],
+        "href": "https://api.spotify.com/v1/artists/1vCWHaC5f2uS3yhpwWbIA6",
+        "id": "1vCWHaC5f2uS3yhpwWbIA6",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab6761610000e5eb09bf4814c6585e1f69dfeef7",
+            "width": 640
+          },
+          {
+            "height": 320,
+            "url": "https://i.scdn.co/image/ab6761610000517409bf4814c6585e1f69dfeef7",
+            "width": 320
+          },
+          {
+            "height": 160,
+            "url": "https://i.scdn.co/image/ab6761610000f17809bf4814c6585e1f69dfeef7",
+            "width": 160
+          }
+        ],
+        "name": "Avicii",
+        "popularity": 84,
+        "type": "artist",
+        "uri": "spotify:artist:1vCWHaC5f2uS3yhpwWbIA6"
+      }
+    ],
+    "limit": 1,
+    "next": "https://api.spotify.com/v1/search?query=avicii&type=artist&market=ES&locale=en-US%2Cen%3Bq%3D0.9%2Ces%3Bq%3D0.8&offset=1&limit=1",
+    "offset": 0,
+    "previous": None,
+    "total": 6
+  }
+}
+
+mg = {
+  "artists": {
+    "href": "https://api.spotify.com/v1/search?query=martin+garrix&type=artist&market=ES&locale=en-US%2Cen%3Bq%3D0.9%2Ces%3Bq%3D0.8&offset=0&limit=1",
+    "items": [
+      {
+        "external_urls": {
+          "spotify": "https://open.spotify.com/artist/60d24wfXkVzDSfLS6hyCjZ"
+        },
+        "followers": {
+          "href": None,
+          "total": 15405442
+        },
+        "genres": [
+          "dance pop",
+          "dutch edm",
+          "edm",
+          "electro house",
+          "pop",
+          "pop dance",
+          "progressive house",
+          "tropical house"
+        ],
+        "href": "https://api.spotify.com/v1/artists/60d24wfXkVzDSfLS6hyCjZ",
+        "id": "60d24wfXkVzDSfLS6hyCjZ",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab6761610000e5eb66d17ee8690d2e8d94ee7387",
+            "width": 640
+          },
+          {
+            "height": 320,
+            "url": "https://i.scdn.co/image/ab6761610000517466d17ee8690d2e8d94ee7387",
+            "width": 320
+          },
+          {
+            "height": 160,
+            "url": "https://i.scdn.co/image/ab6761610000f17866d17ee8690d2e8d94ee7387",
+            "width": 160
+          }
+        ],
+        "name": "Martin Garrix",
+        "popularity": 81,
+        "type": "artist",
+        "uri": "spotify:artist:60d24wfXkVzDSfLS6hyCjZ"
+      }
+    ],
+    "limit": 1,
+    "next": "https://api.spotify.com/v1/search?query=martin+garrix&type=artist&market=ES&locale=en-US%2Cen%3Bq%3D0.9%2Ces%3Bq%3D0.8&offset=1&limit=1",
+    "offset": 0,
+    "previous": None,
+    "total": 3
+  }
+}
+
+zedd = {
+  "artists": {
+    "href": "https://api.spotify.com/v1/search?query=zedd&type=artist&market=ES&locale=en-US%2Cen%3Bq%3D0.9%2Ces%3Bq%3D0.8&offset=0&limit=1",
+    "items": [
+      {
+        "external_urls": {
+          "spotify": "https://open.spotify.com/artist/2qxJFvFYMEDqd7ui6kSAcq"
+        },
+        "followers": {
+          "href": None,
+          "total": 5686974
+        },
+        "genres": [
+          "complextro",
+          "dance pop",
+          "edm",
+          "electro house",
+          "electropop",
+          "german techno",
+          "pop",
+          "pop dance",
+          "pop rap",
+          "tropical house"
+        ],
+        "href": "https://api.spotify.com/v1/artists/2qxJFvFYMEDqd7ui6kSAcq",
+        "id": "2qxJFvFYMEDqd7ui6kSAcq",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab6761610000e5ebcbe6db0e826f9e816a7d158e",
+            "width": 640
+          },
+          {
+            "height": 320,
+            "url": "https://i.scdn.co/image/ab67616100005174cbe6db0e826f9e816a7d158e",
+            "width": 320
+          },
+          {
+            "height": 160,
+            "url": "https://i.scdn.co/image/ab6761610000f178cbe6db0e826f9e816a7d158e",
+            "width": 160
+          }
+        ],
+        "name": "Zedd",
+        "popularity": 80,
+        "type": "artist",
+        "uri": "spotify:artist:2qxJFvFYMEDqd7ui6kSAcq"
+      }
+    ],
+    "limit": 1,
+    "next": "https://api.spotify.com/v1/search?query=zedd&type=artist&market=ES&locale=en-US%2Cen%3Bq%3D0.9%2Ces%3Bq%3D0.8&offset=1&limit=1",
+    "offset": 0,
+    "previous": None,
+    "total": 123
+  }
+}
+
+favArtists = [avicii, mg, zedd]
