@@ -12,9 +12,11 @@ let userData = {
   activities: [],
   mood: "peaceful",
   theme: " ",
-  number: 20,
-  PostResponse: {}
+  number: 20
 }
+
+let postResponsemessage = ""
+let postResponse = {}
 
 const getSong = (event, i)=>{
   userData.favSongs[i] = event.target.value;
@@ -52,24 +54,29 @@ function collectData() {
   //Send to flask
   APIService.InsertQuery(userData)
   .then((response) => openPopup(response))
-  .catch(error => console.log('error', error))
-
-  displayOutput();
+  .catch(error => openPopup(error))
 }
 
 function displayOutput(){
   var list_str = '<ul>'
-  for (const key in userData.PostResponse) {
-    list_str += '<li><a href="' + userData.PostResponse[key][2] + '">'+ userData.PostResponse[key][0] + ', ' + userData.PostResponse[key][1] + '</a></li>';
+  for (const key in postResponse) {
+    list_str += '<li><a href="' + postResponse[key][2] + ' " target="_blank">'+ postResponse[key][0] + ', ' + postResponse[key][1] + '</a></li>';
   }
   list_str += '</ul>'
   document.getElementById("myResult").innerHTML = list_str;
 }
 
 function openPopup(response) {
-  userData.PostResponse=response.result;
+  if(response) {
+    postResponsemessage = "Success!"
+    postResponse=response.result;
+  }else{
+    postResponsemessage = "Error: could not connect to Flask";
+  }
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
+  modal.firstChild.childNodes[3].textContent = postResponsemessage
+  displayOutput();
   modal.style.display = "block";
 }
 
@@ -132,11 +139,12 @@ function App() {
           <span className="close" onClick={closePopup}>&times;</span>
           <h4>User Data</h4>
           <p></p>
+          <p></p>
+          {/* <a href="www.google.com" target="_blank">Playlist</a> */}
+          <div id="myResult" className="result"></div>
         </div>
       </div>
 
-      <div id="myResult" className="result">
-      </div>
 
     </div>
   );
