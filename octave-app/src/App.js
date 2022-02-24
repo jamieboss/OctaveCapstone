@@ -55,14 +55,12 @@ function collectData() {
   APIService.InsertQuery(userData)
   .then((response) => openPopup(response))
   .catch(error => openPopup(error))
-
-  displayOutput();
 }
 
 function displayOutput(){
   var list_str = '<ul>'
   for (const key in postResponse) {
-    list_str += '<li><a href="' + postResponse[key][2] + '">'+ postResponse[key][0] + ', ' + postResponse[key][1] + '</a></li>';
+    list_str += '<li><a href="' + postResponse[key][2] + ' " target="_blank">'+ postResponse[key][0] + ', ' + postResponse[key][1] + '</a></li>';
   }
   list_str += '</ul>'
   document.getElementById("myResult").innerHTML = list_str;
@@ -78,6 +76,7 @@ function openPopup(response) {
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.firstChild.childNodes[3].textContent = postResponsemessage
+  displayOutput();
   modal.style.display = "block";
 }
 
@@ -142,8 +141,7 @@ function App() {
           <p></p>
           <p></p>
           {/* <a href="www.google.com" target="_blank">Playlist</a> */}
-          <div id="myResult" className="result">
-          </div>
+          <div id="myResult" className="result"></div>
         </div>
       </div>
 

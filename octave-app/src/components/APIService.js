@@ -1,6 +1,6 @@
 export default class APIService{
     static InsertQuery(body){
-        return fetch('http://localhost:5000/data', {
+        return fetch('http://localhost:8080/data', {
             'method': 'POST',
             headers : {
                 'Content-Type': 'application/json'
