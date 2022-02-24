@@ -12,9 +12,10 @@ let userData = {
   activities: [],
   mood: "peaceful",
   theme: " ",
-  number: 20,
-  PostResponse: " "
+  number: 20
 }
+
+let postResponse = " "
 
 const getSong = (event, i)=>{
   userData.favSongs[i] = event.target.value;
@@ -57,12 +58,13 @@ function collectData() {
 
 function openPopup(response) {
   if(response) {
-    userData.PostResponse=response.message;
+    postResponse=response.message;
   }else{
-    userData.PostResponse = "Error";
+    postResponse = "Error: could not connect to Flask";
   }
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
+  modal.firstChild.childNodes[3].href = postResponse
   modal.style.display = "block";
 }
 
@@ -125,6 +127,7 @@ function App() {
           <span className="close" onClick={closePopup}>&times;</span>
           <h4>User Data</h4>
           <p></p>
+          <a href="www.google.com" target="_blank">Playlist</a>
         </div>
       </div>
       
