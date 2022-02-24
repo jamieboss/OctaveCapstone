@@ -31,15 +31,22 @@ def user_query():
         song_results[track_id].append(track["external_urls"]["spotify"])
 
     #TODO Replace above example with desired analysis to gather playlist
-    
-    #playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
-    #return jsonify(message=playlistLink)
 
     '''
     Important! This is how song_results should be formatted in order for the front end to parse it correctly.
     song_results = {track_id_1: [song_name, song_artist, spotify_link], ... , track_id_n: [song_name, song_artist, spotify_link]}
     '''
     return jsonify(result=song_results)
+
+@app.route('/playlist', methods=['POST'])
+@cross_origin()
+def playlist_query():
+    print(request.get_json())
+    req = request.get_json()
+
+    
+    playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
+    return jsonify(message=playlistLink)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8080", debug=True)

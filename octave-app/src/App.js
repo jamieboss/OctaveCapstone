@@ -17,6 +17,7 @@ let userData = {
 
 let postResponsemessage = ""
 let postResponse = {}
+let playlistUrl = "google.com"
 
 const getSong = (event, i)=>{
   userData.favSongs[i] = event.target.value;
@@ -70,19 +71,37 @@ function openPopup(response) {
   if(response) {
     postResponsemessage = "Success!"
     postResponse=response.result;
+    displayOutput();
   }else{
     postResponsemessage = "Error: could not connect to Flask";
   }
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.firstChild.childNodes[3].textContent = postResponsemessage
-  displayOutput();
   modal.style.display = "block";
 }
 
-function closePopup() {
-  var modal = document.getElementById("myModal");
+function openPopup2(response) {
+  if(response) {
+    playlistUrl=response.message
+  }else{
+    playlistUrl="error"
+  }
+  closePopup("myModal")
+  var modal = document.getElementById("myModal2");
+  modal.firstChild.childNodes[2].href = playlistUrl;
+  modal.style.display = "block";
+}
+
+function closePopup(id) {
+  var modal = document.getElementById(id);
   modal.style.display = "none";
+}
+
+function generatePlaylist() {
+  APIService.GetPlaylist(userData)
+  .then((response) => openPopup2(response))
+  .catch(error => openPopup(error))
 }
 
 function App() {
@@ -136,12 +155,20 @@ function App() {
 
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <span className="close" onClick={closePopup}>&times;</span>
+          <span className="close" onClick={()=> closePopup("myModal")}>&times;</span>
           <h4>User Data</h4>
           <p></p>
           <p></p>
-          {/* <a href="www.google.com" target="_blank">Playlist</a> */}
           <div id="myResult" className="result"></div>
+          <button onClick={generatePlaylist}>Skip this step</button>
+        </div>
+      </div>
+
+      <div id="myModal2" className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={()=> closePopup("myModal2")}>&times;</span>
+          <h4>Enjoy your playlist!</h4>
+          <a href="www.google.com" target="_blank">Playlist</a>
         </div>
       </div>
 
