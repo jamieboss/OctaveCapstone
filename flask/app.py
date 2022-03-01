@@ -17,15 +17,21 @@ def user_query():
     print('REQUEST RECEIVED:')
     print(req)
     
+    artist_results = {}
+    for hit in favArtists: # favArtists will be replaced with req['favArtist']
+        # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
+        # es.search(...) to search for artist via elastic search
+        artist = hit["artists"]["items"][0]
+        artist_id = artist["id"]
+        artist_results[artist_id] = artist["name"]
+    print(artist_results)
     '''
     Example: 
     This loop below iterates over each favorite song and returns its track id, name, and artist
     My spotify API is not working so these "results" are pulled from three manual hits to the API i made to get song data and I am treating it like a black box currently. 
     '''
     song_results = {}
-    for hit in favSongs: # favSongs will be replaced with req['favSongs']
-        # sp.search(hit, type='track', limit=1, market='ES') to search for song via spotify
-        # es.search(...) to search for song via elastic search
+    for hit in favSongs:
         track = hit["tracks"]["items"][0]
         track_id = track["id"]
         song_results[track_id] = []
@@ -33,15 +39,7 @@ def user_query():
         song_results[track_id].append(track["artists"][0]["name"])
         song_results[track_id].append(track["external_urls"]["spotify"])
 
-    artist_results = {}
-    for hit in favArtists:# favSongs will be replaced with req['favArtist']
-        # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
-        # es.search(...) to search for artist via elastic search
-        artist = hit["artists"]["items"][0]
-        artist_id = artist["id"]
-        artist_results[artist_id] = artist["name"]
 
-    print(artist_results)
     #TODO Replace above examples with desired analysis to gather playlist
     
     '''
