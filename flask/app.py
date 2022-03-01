@@ -1,7 +1,6 @@
 from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
 import requests
-from SpotifyOAuth import sp
 from search_examples import favSongs, favArtists
 
 
