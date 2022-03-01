@@ -1,12 +1,14 @@
-
-import elasticsearch_db as esd
+from elasticsearch_db import ElasticsearchDB
 import json
 import sys
-sys.path.insert(1, '../spotify_scripts')
-from spotify_scripts import SongFeatures
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent + '\spotify_scripts')
+import SongFeatures
 
 # Create the elasticsearch_db object
-es_db = esd.ElasticsearchDB()
+es_db = ElasticsearchDB()
 
 # Create song index
 with open('elasticsearch/song_mapping.json') as f: # Load the song mapping json from this directory.
@@ -14,11 +16,12 @@ with open('elasticsearch/song_mapping.json') as f: # Load the song mapping json 
 es_db.create_index('songs', song_mapping)
 
 # Get songList from external script
-songList = SongFeatures.get_tracks_for_es()
+songList = SongFeatures.get_tracks_for_es(1)
+print(songList)
 
 # Store all songs from songList into elasticsearch
-for song in songList:
-    es_db.store_record('songs', song)
+for i, song in enumerate(songList):
+    es_db.store_record('songs', i, song)
 
 # Test to see if all songs are returned when queried
 search_object = {'query': {'match_all': {}}}
