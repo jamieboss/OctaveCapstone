@@ -25,7 +25,7 @@ def user_query():
     '''
    
     playlist = playlist_from_input(req);
-    n = req['number_of_songs'];
+    number_of_songs = req['number'];
     song_results = {}
 
     #print(playlist['tracks'][0]['external_urls']);
