@@ -14,6 +14,7 @@ def playlist_from_input(input):
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
     input_features = select_features_alter(input);
+    number_of_songs = input['number'];
 
     input_artists_id = [];
     for (artist) in input['favArtists']:
@@ -23,10 +24,10 @@ def playlist_from_input(input):
 
     input_songs_id = [];
     for (song) in input['favSongs']:
-    	res = sp.search(q=song, limit=3, offset=0, type="track", market="US");
+    	res = sp.search(q=song, limit=1, offset=0, type="track", market="US");
     	song_id = res["tracks"]["items"][0]["id"];
     	input_songs_id.append(song_id);
     
-    songs = sp.recommendations(seed_artists = input_artists_id, seed_genres=None, seed_tracks=input_songs_id, limit=10, country=None, target_acousticness = input_features[0], target_danceability = input_features[1], target_energy = input_features[2], target_speechiness = input_features[3], target_tempo = input_features[4], target_valence = input_features[5]);
+    songs = sp.recommendations(seed_artists = input_artists_id, seed_genres=None, seed_tracks=input_songs_id, limit=number_of_songs, country=None, target_acousticness = input_features[0], target_danceability = input_features[1], target_energy = input_features[2], target_speechiness = input_features[3], target_tempo = input_features[4], target_valence = input_features[5]);
 
     return songs;

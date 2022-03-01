@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-from flask import Flask, redirect
-
-app = Flask(__name__)
-=======
 from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
 import requests
@@ -28,16 +23,14 @@ def user_query():
     This loop below iterates over each favorite song and returns its track id, name, and artist
     My spotify API is not working so these "results" are pulled from three manual hits to the API i made to get song data and I am treating it like a black box currently. 
     '''
-    
-    #input_features = select_features_alter(req);
-    #print(input_features);
+   
     playlist = playlist_from_input(req);
-
+    n = req['number_of_songs'];
     song_results = {}
 
     #print(playlist['tracks'][0]['external_urls']);
 
-    for i in range(3):
+    for i in range(number_of_songs):
 
     	track_id = playlist['tracks'][i]['id']
     	song_results[track_id] = [];
@@ -63,6 +56,6 @@ def playlist_query():
     
     playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
     return jsonify(message=playlistLink)
->>>>>>> Stashed changes
 
-import routes
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="8080", debug=True)

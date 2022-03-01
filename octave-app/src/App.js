@@ -3,6 +3,7 @@ import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
+import APIService from './components/APIService';
 
 let userData = {
   favSongs: [],
@@ -11,8 +12,12 @@ let userData = {
   activities: [],
   mood: "peaceful",
   theme: " ",
-  number: 20,
+  number: 20
 }
+
+let postResponsemessage = ""
+let postResponse = {}
+let playlistUrl = "google.com"
 
 const getSong = (event, i)=>{
   userData.favSongs[i] = event.target.value;
@@ -47,15 +52,56 @@ function collectData() {
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
 
-  //Display pop-up
+  //Send to flask
+  APIService.InsertQuery(userData)
+  .then((response) => openPopup(response))
+  .catch(error => openPopup(error))
+}
+
+function displayOutput(){
+  var list_str = '<ul>'
+  for (const key in postResponse) {
+    list_str += '<li><a href="' + postResponse[key][2] + ' " target="_blank">'+ postResponse[key][0] + ', ' + postResponse[key][1] + '</a></li>';
+  }
+  list_str += '</ul>'
+  document.getElementById("myResult").innerHTML = list_str;
+}
+
+function openPopup(response) {
+  if(response) {
+    postResponsemessage = "Success!"
+    postResponse=response.result;
+    displayOutput();
+  }else{
+    postResponsemessage = "Error: could not connect to Flask";
+  }
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
+  modal.firstChild.childNodes[3].textContent = postResponsemessage
   modal.style.display = "block";
 }
 
-function closePopup() {
-  var modal = document.getElementById("myModal");
+function openPopup2(response) {
+  if(response) {
+    playlistUrl=response.message
+  }else{
+    playlistUrl="error"
+  }
+  closePopup("myModal")
+  var modal = document.getElementById("myModal2");
+  modal.firstChild.childNodes[2].href = playlistUrl;
+  modal.style.display = "block";
+}
+
+function closePopup(id) {
+  var modal = document.getElementById(id);
   modal.style.display = "none";
+}
+
+function generatePlaylist() {
+  APIService.GetPlaylist(userData)
+  .then((response) => openPopup2(response))
+  .catch(error => openPopup(error))
 }
 
 function App() {
@@ -64,10 +110,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src="./octavelogo.png" alt = "logo" width="480px"/>
-        <p>Custom Spotify Playlist Generator</p>
       </header>
 
-      <h5 className="intro">Welcome to Octave, a Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
+      <h5 className="intro">Welcome to Octave, a custom Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
       <div className = "FavInput">
         <h3>Favorite Songs</h3>
         <h3>Favorite Artists</h3>
@@ -110,12 +155,24 @@ function App() {
 
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <span className="close" onClick={closePopup}>&times;</span>
+          <span className="close" onClick={()=> closePopup("myModal")}>&times;</span>
           <h4>User Data</h4>
           <p></p>
+          <p></p>
+          <div id="myResult" className="result"></div>
+          <button onClick={generatePlaylist}>Skip this step</button>
         </div>
       </div>
-      
+
+      <div id="myModal2" className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={()=> closePopup("myModal2")}>&times;</span>
+          <h4>Enjoy your playlist!</h4>
+          <a href="www.google.com" target="_blank">Playlist</a>
+        </div>
+      </div>
+
+
     </div>
   );
 }
