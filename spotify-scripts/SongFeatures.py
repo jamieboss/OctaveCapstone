@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import pandas as pd
 from SpotifyOAuth import sp
 
@@ -41,7 +40,6 @@ def artistSongAttributes():
 
 # gets to audio features for each track in the id list and stores it in a dataframe
 def getTracksAudioFeatures(trackIds):
-    print(len(trackIds))
     trackDf = pd.DataFrame(columns=['name', 'artist', 'uri', "danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "valence", "tempo"])
     # get track info and audio features for each track in the list
     oldIndex = 0
