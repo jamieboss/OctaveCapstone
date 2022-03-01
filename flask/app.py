@@ -42,8 +42,6 @@ def user_query():
 @cross_origin()
 def playlist_query():
     print(request.get_json())
-    req = request.get_json()
-
     
     playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
     return jsonify(message=playlistLink)

@@ -67,6 +67,10 @@ li {
   list-style-type: none;
 }
 
+a {
+  color:rgb(2, 75, 2)!important;
+}
+
 .Slider {
   display: flex;
   justify-content: center;
@@ -75,6 +79,18 @@ li {
 
 .hue-picker {
   width: 900px!important;
+}
+
+.ThemeNum {
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  padding-bottom: 24px;
+}
+
+.ThemeNum li {
+  margin-left: 24px;
+  margin-right: 24px;
 }
 
 .Generate button {
@@ -103,6 +119,8 @@ li {
   overflow: auto;
   border: 1px solid #888;
   width: 600px!important; /* Could be more or less, depending on screen size */
+  align-items: center;
+  justify-content: center;
 }
 
 /* The Close Button */
