@@ -18,9 +18,9 @@ class ElasticsearchDB:
         logging.info(f'Deleting index {index_name}')
         self.es.indices.delete(index=index_name, ignore=[400,404])
 
-    def store_record(self, index_name, doc):
+    def store_record(self, index_name, id, doc):
         logging.info(f'Writing document to ES index {index_name}')
-        res = self.es.index(index=index_name, document=json.dumps(doc), refresh = True)
+        res = self.es.index(index=index_name, id=id, document=json.dumps(doc), refresh = True)
 
     def search(self, index_name, query):
         res = self.es.search(index=index_name, body=json.dumps(query))
