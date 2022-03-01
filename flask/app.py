@@ -2,7 +2,7 @@ from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
 import requests
 from search_examples import favSongs, favArtists
-
+from Main import main
 
 app = Flask(__name__)
 CORS(app)
@@ -12,18 +12,16 @@ app.config['SECRET_KEY'] = 'osd(99092=36&462134kjKDhuIS_d23'
 @app.route('/data', methods=['POST'])
 @cross_origin()
 def user_query():
-    req = request.get_json()
+    input = request.get_json()
     print('REQUEST RECEIVED:')
-    print(req)
+    print(input)
+
     
-    artist_results = {}
-    for hit in favArtists: # favArtists will be replaced with req['favArtist']
-        # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
-        # es.search(...) to search for artist via elastic search
-        artist = hit["artists"]["items"][0]
-        artist_id = artist["id"]
-        artist_results[artist_id] = artist["name"]
-    print(artist_results)
+    '''
+    This call to main will send over all of the input data from the front end over to the analysis function
+    '''
+    #main(input)
+
     '''
     Example: 
     This loop below iterates over each favorite song and returns its track id, name, and artist
