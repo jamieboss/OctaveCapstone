@@ -3,6 +3,8 @@ import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
+import Playlist from "./components/Playlist";
+
 
 let userData = {
   favSongs: [],
@@ -61,6 +63,7 @@ function closePopup() {
 function App() {
 
   return (
+   
     <div className="App">
       <header className="App-header">
         <img src="./octavelogo.png" alt = "logo" width="480px"/>
