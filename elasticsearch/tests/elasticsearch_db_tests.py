@@ -1,7 +1,9 @@
-import unittest
 import json
-
-from elasticsearch import NotFoundError
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
 from elasticsearch_db import ElasticsearchDB
 
 def test_create_index(test_es):
