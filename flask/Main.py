@@ -49,3 +49,10 @@ def main(input):
     activitySongs = selectCluster(clusterDf, 1)
     # filter songs in the selected cluster based on the user selected mood
     moodSongs = moodFilterCluster(activitySongs, 'HAPPY')
+
+    '''
+    Important! This is how song_results should be formatted in order for the front end to parse it correctly.
+    song_results = {track_id_1: [song_name, song_artist, spotify_external_link], ... , track_id_n: [song_name, song_artist, spotify_external_link]}
+    '''
+    song_results = {}
+    return song_results
