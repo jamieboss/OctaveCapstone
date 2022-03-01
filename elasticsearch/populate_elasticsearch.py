@@ -1,7 +1,9 @@
 
-from turtle import end_fill
 import elasticsearch_db as esd
 import json
+import sys
+sys.path.insert(1, '../spotify_scripts')
+from spotify_scripts import SongFeatures
 
 # Create the elasticsearch_db object
 es_db = esd.ElasticsearchDB()
@@ -12,7 +14,7 @@ with open('elasticsearch/song_mapping.json') as f: # Load the song mapping json 
 es_db.create_index('songs', song_mapping)
 
 # Get songList from external script
-songList = []
+songList = SongFeatures.get_tracks_for_es()
 
 # Store all songs from songList into elasticsearch
 for song in songList:

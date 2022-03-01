@@ -74,13 +74,28 @@ def addTracksToDataframe(trackDf, trackIds, startIndex, stopIndex):
         trackDf.loc[len(trackDf)] = row
 
 # Getting ~10000 songs and all the features for them from a huge spotify playlist. This is good enough for our purposes to populate elastic search.
-def get_tracks_for_es():
+def get_tracks_for_es(limit=100):
     songIds = []
-    for i in range(100): # playlist_tracks has limit of 100, has 10k songs, 100 * 100 = 10k
+    for i in range(limit): # playlist_tracks has limit of 100, has 10k songs, 100 * 100 = 10k
         tracks = sp.playlist_tracks(playlist_id='6yPiKpy7evrwvZodByKvM9', offset=i*100)
         for j in range(len(tracks['items'])):
             id = tracks['items'][j]['track']['uri'][-22:] # ID is last 22 characters of string. Sometimes this returns a artist name randomly with +s, so calling isalnum() to ensure id
             if len(id) != 0 and id.isalnum():
                 songIds.append(id)
     features = getTracksAudioFeatures(songIds)
-    return features
+    es_data = []
+    for i in range(len(features)):
+        track = {}
+        track['name'] = features['name'][i]
+        track['artist'] = features['artist'][i]
+        track['uri'] = features['uri'][i]
+        track['danceability'] = features['danceability'][i]
+        track['energy'] = features['energy'][i]
+        track['loudness'] = features['loudness'][i]
+        track['speechiness'] = features['speechiness'][i]
+        track['acousticness'] = features['acousticness'][i]
+        track['instrumentalness'] = features['instrumentalness'][i]
+        track['valence'] = features['valence'][i]
+        track['tempo'] = features['tempo'][i]
+        es_data.append(track)
+    return es_data
