@@ -1,11 +1,11 @@
 import os
 import numpy as np
 import pandas as pd
-import csv
 from SpotifyOAuth import sp
 
 #read from database
-script_dir = os.getcwd()
+cwd = os.path.dirname(os.path.realpath(__file__))
+script_dir = os.path.dirname(cwd)
 file = 'artist-uris.csv'
 df = pd.read_csv(os.path.normcase(os.path.join(script_dir, file)))
 df.head
