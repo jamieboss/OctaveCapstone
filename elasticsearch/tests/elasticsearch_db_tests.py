@@ -1,7 +1,9 @@
-import unittest
 import json
-
-from elasticsearch import NotFoundError
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
 from elasticsearch_db import ElasticsearchDB
 
 def test_create_index(test_es):
@@ -16,7 +18,7 @@ def test_delete_index(test_es):
 
 def test_store_record(test_es):
     record_object = {'name': 'Blank Space', 'artist': 'Taylor Swift', 'album': '1989', 'mood': 0.5}
-    test_es.store_record('tests', record_object)
+    test_es.store_record('tests', 0, record_object)
     assert test_es.es.count(index='tests')['count'] == 1
 
 def test_search_match(test_es):
