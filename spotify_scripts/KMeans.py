@@ -1,5 +1,3 @@
-from cmath import polar
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -8,76 +6,102 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from kneed import KneeLocator
 
-from SongFeatures import getTracksAudioFeatures
-from TrackGeneration import songList
+# creates a graph that shows the cumulative feature variance
+def plotFeatureVariance(evr):
+    # visualization of the variance of each feature
+    plt.figure(figsize=(10,8))
+    plt.plot(range(1,9), evr.cumsum(), marker='o', linestyle='--')
+    plt.title('Explained Variance by Components')
+    plt.xlabel('Number of Components')
+    plt.ylabel('Cumulative Explained Variance')
+    plt.show()
 
-featureLabels = ["danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "valence", "tempo"]
-df = getTracksAudioFeatures(songList)
-print(df)
-df_X = df[featureLabels]
+# creates a graph showing the WCSS for K-Means using different numbers of clusters
+def plotWCSS(wcss):
+    plt.figure(figsize=(10,8))
+    plt.plot(range(1,21), wcss, marker='o', linestyle='--')
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('WCSS')
+    plt.title('K-Means with PCA Clustering')
+    plt.show()
 
-# standardize all the features so they have equal weighting
-scaler = StandardScaler()
-X_std = scaler.fit_transform(df_X)
+# creates a graph to visualize the clusters
+def clusterRadarChart(df, featureLabels, numClusters):
+    radarLabels = [*featureLabels, featureLabels[0]]
+    label_loc = np.linspace(start=0, stop=2*np.pi, num=len(radarLabels))
+    plt.figure(figsize=(10,10))
+    plt.subplot(polar=True)
 
-# determine how many feature components we need to have to achieve at least 80% variance
-featureCountPca = PCA()
-featureCountPca.fit(X_std)
-evr = featureCountPca.explained_variance_ratio_
+    for cluster in range(numClusters):
+        print(df.loc[df['cluster'] == cluster],'\n')
+        clusterAverages = df.loc[df['cluster'] == cluster, featureLabels].mean(numeric_only=True).array
+        plt.plot(label_loc, [*clusterAverages, clusterAverages[0]], label='Cluster: ' + str(cluster))
 
-# visualization of the variance of each feature
-plt.figure(figsize=(10,8))
-plt.plot(range(1,9), evr.cumsum(), marker='o', linestyle='--')
-plt.title('Explained Variance by Components')
-plt.xlabel('Number of Components')
-plt.ylabel('Cumulative Explained Variance')
-plt.show()
+    plt.title('Song clusters', size=20)
+    lines, labels = plt.thetagrids(np.degrees(label_loc), labels=radarLabels)
+    plt.legend()
+    plt.show()
 
-# using the number of features determined above create a new PCA object initailized with that value
-pca = PCA(n_components=5)
-pca.fit(X_std)
-scoresPca = pca.transform(X_std)
+# determines the number of features needed to reach 80% variance
+def optimalNumFeatures(xStd):
+    featureCountPca = PCA()
+    featureCountPca.fit(xStd)
+    evr = featureCountPca.explained_variance_ratio_
+    evrCum = np.array(evr.cumsum())
+    return evr, np.where(evrCum > 0.8)[0][0] + 1
 
-# determine the optimal number of clusters (k) for kMeans
-wcss = []
-for i in range(1,21):
-    kmeansPca = KMeans(n_clusters=i, random_state=42)
-    kmeansPca.fit(scoresPca)
-    wcss.append(kmeansPca.inertia_)
+# determines the optimal number of clusters using within cluster sum of squares (WCSS)
+def optimalNumClusters(scoresPca):
+    wcss = []
+    for i in range(1,21):
+        kmeansPca = KMeans(n_clusters=i, random_state=42)
+        kmeansPca.fit(scoresPca)
+        wcss.append(kmeansPca.inertia_)
+    # locates the elbow to determine number of clusters
+    return wcss, KneeLocator([i for i in range(1, 21)], wcss, curve='convex', direction='decreasing').knee
 
-# grapically show the Within Cluster Sum of Squares (WCSS) to find the optimal number of clusters
-plt.figure(figsize=(10,8))
-plt.plot(range(1,21), wcss, marker='o', linestyle='--')
-plt.xlabel('Number of Clusters')
-plt.ylabel('WCSS')
-plt.title('K-Means with PCA Clustering')
-plt.show()
+# given a list of songs use PCA and K-Means to seperate into different clusters
+def kMeans(df, featureLabels):
+    # seperate only the numeric data from the dataframe
+    dfX = df[featureLabels]
+    # standardize all the features so they have equal weighting
+    scaler = StandardScaler()
+    xStd = scaler.fit_transform(dfX)
 
-# locate the elbow to determine number of clusters
-numClusters = KneeLocator([i for i in range(1, 21)], wcss, curve='convex', direction='decreasing').knee
-print(numClusters)
+    # compute the number of components needed for 80% variance
+    evr, numComponents = optimalNumFeatures(xStd)
 
-# complete KMeans with the optimal number of clusters
-kmeanPCA = KMeans(n_clusters=numClusters, random_state=42)
-kmeanPCA.fit(scoresPca)
-df['Cluster'] = kmeanPCA.labels_
+    # show graph of feature variance
+    # plotFeatureVariance(evr)
 
-# normalize all of the audio features in the data frame
-for feature in featureLabels:
-    df[feature] = (df[feature] - df[feature].min()) / (df[feature].max() - df[feature].min())
+    # using the number of features determined above create a new PCA object initailized with that value
+    pca = PCA(n_components=numComponents)
+    pca.fit(xStd)
+    scoresPca = pca.transform(xStd)
+    
+    # compute the optimal number of clusters (k) to minimize the WCSS
+    wcss, numClusters = optimalNumClusters(scoresPca)
 
-# create a radar chart to visualize clustering based on all the features
-radarLabels = [*featureLabels, featureLabels[0]]
-label_loc = np.linspace(start=0, stop=2*np.pi, num=len(radarLabels))
-plt.figure(figsize=(10,10))
-plt.subplot(polar=True)
+    # show graph of wcss for each number of clusters using K-Means
+    # plotWCSS(wcss)
 
-for cluster in range(numClusters):
-    print(df.loc[df['Cluster'] == cluster],'\n')
-    clusterAverages = df.loc[df['Cluster'] == cluster, featureLabels].mean(numeric_only=True).array
-    plt.plot(label_loc, [*clusterAverages, clusterAverages[0]], label='Cluster: ' + str(cluster))
+    # complete KMeans with the optimal number of clusters
+    kmeanPCA = KMeans(n_clusters=numClusters, random_state=42)
+    kmeanPCA.fit(scoresPca)
 
-plt.title('Song clusters', size=20)
-lines, labels = plt.thetagrids(np.degrees(label_loc), labels=radarLabels)
-plt.legend()
-plt.show()
+    # adds column to dataframe that represents the associated cluster
+    df = df.assign(cluster = kmeanPCA.labels_)
+
+    # normalize all of the audio features in the data frame
+    for feature in featureLabels:
+        df.loc[:, feature] = (dfX[feature] - dfX[feature].min()) / (dfX[feature].max() - dfX[feature].min())
+
+    # create a radar chart to visualize clustering based on all the features
+    # clusterRadarChart(df, featureLabels, numClusters)
+
+    return df
+
+# TODO: alter this when we determine activity properties
+# select a cluster based on the activity selection by the user in the website and return the song ids
+def selectCluster(df, activity):
+    return df.loc[df['cluster'] == 1]['uri'].array
