@@ -1,4 +1,3 @@
-import os
 import json
 import logging
 from elasticsearch import Elasticsearch
@@ -23,6 +22,6 @@ class ElasticsearchDB:
         res = self.es.index(index=index_name, id=id, document=json.dumps(doc), refresh = r)
 
     def search(self, index_name, query):
-        res = self.es.search(index=index_name, body=json.dumps(query))
+        res = self.es.search(index=index_name, size=10000, body=json.dumps(query))
         return res
 

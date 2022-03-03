@@ -17,15 +17,14 @@ with open(mapping_file) as f: # Load the song mapping json from this directory.
 es_db.create_index('songs', song_mapping)
 
 # Get songList from external script
-songList = SongFeatures.get_tracks_for_es(3)
-print('Got songs')
+songList = SongFeatures.get_tracks_for_es()
+print('Obtained song list')
 
 # Store all songs from songList into elasticsearch
 for i, song in enumerate(songList):
     r = i == (len(songList) - 1)
     es_db.store_record('songs', i, song, r)
-print('Stored songs')
-
+print('Stored all songs in Elasticsearch database')
 
 # Test to see if all songs are returned when queried
 search_object = {'query': {'match_all': {}}}
