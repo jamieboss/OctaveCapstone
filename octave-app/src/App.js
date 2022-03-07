@@ -5,6 +5,9 @@ import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
 import APIService from './components/APIService';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+
 let userData = {
   favSongs: [],
   favArtists: [],
@@ -13,6 +16,10 @@ let userData = {
   mood: "peaceful",
   theme: " ",
   number: 20
+}
+
+let likes = {
+  songs: []
 }
 
 let postResponsemessage = ""
@@ -50,12 +57,12 @@ function openPopup(response) {
 }
 
 function displayOutput(){
-  var list_str = '<ul>'
+  var i = 0
   for (const key in postResponse) {
-    list_str += '<li><a href="' + postResponse[key][2] + ' " target="_blank">'+ postResponse[key][0] + ', ' + postResponse[key][1] + '</a><p>Test</p></li>';
+    document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].textContent = postResponse[key][0] + ', ' + postResponse[key][1]
+    document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].href = postResponse[key][2]
+    i++
   }
-  list_str += '</ul>'
-  document.getElementById("myResult").innerHTML = list_str;
 }
 
 function openPopup2(response) {
@@ -73,8 +80,19 @@ function closePopup(id) {
   modal.style.display = "none";
 }
 
+function setLike(i) {
+  likes.songs[i] = 1
+  document.getElementById("like"+i).classList.add("active")
+  document.getElementById("dislike"+i).classList.remove("active")
+}
+function setDislike(i) {
+  likes.songs[i] = 0
+  document.getElementById("like"+i).classList.remove("active")
+  document.getElementById("dislike"+i).classList.add("active")
+}
+
 function generatePlaylist() {
-  APIService.GetPlaylist(userData)
+  APIService.GetPlaylist(likes)
   .then((response) => openPopup2(response))
   .catch(error => openPopup(error))
 }
@@ -141,7 +159,22 @@ function App() {
           <p></p>
           <p></p>
           <h4>Do you like these songs?</h4>
-          <div id="myResult" className="result"></div>
+          <div id="myResult" className="result">
+            <ul>
+              <li><a href="test.com" target="_blank">Test1</a><div class="rating">
+                <div id="like0" class = "like" onClick={() => setLike(0)}><React.Fragment><FontAwesomeIcon icon={faThumbsUp}/></React.Fragment></div>
+                <div id="dislike0" class = "dislike" onClick={() => setDislike(0)}><FontAwesomeIcon icon = {faThumbsDown}/></div>
+              </div></li>
+              <li><a href="test.com" target="_blank">Test2</a><div class="rating">
+                <div id="like1" class = "like" onClick={() => setLike(1)}><React.Fragment><FontAwesomeIcon icon={faThumbsUp}/></React.Fragment></div>
+                <div id="dislike1" class = "dislike" onClick={() => setDislike(1)}><FontAwesomeIcon icon = {faThumbsDown}/></div>
+              </div></li>
+              <li><a href="test.com" target="_blank">Test3</a><div class="rating">
+                <div id="like2" class = "like" onClick={() => setLike(2)}><React.Fragment><FontAwesomeIcon icon={faThumbsUp}/></React.Fragment></div>
+                <div id="dislike2" class = "dislike" onClick={() => setDislike(2)}><FontAwesomeIcon icon = {faThumbsDown}/></div>
+              </div></li>
+            </ul>
+          </div>
           <button onClick={generatePlaylist}>Continue</button>
         </div>
       </div>
@@ -151,7 +184,7 @@ function App() {
           <span className="close" onClick={()=> closePopup("myModal2")}>&times;</span>
           <img src="./octavelogo.png" alt = "logo" width="240px"/>
           <h4>Enjoy your playlist!</h4>
-          <a href="www.google.com" target="_blank">Playlist</a>
+          <a href="www.google.com" target="_blank">Click here</a>
         </div>
       </div>
 

@@ -97,6 +97,24 @@ a {
   width: 180px;
 }
 
+.rating {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.like,
+.dislike {
+  display: inline-block;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.dislike:hover,
+.like:hover, .active {
+  color: #2EBDD1;
+}
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
