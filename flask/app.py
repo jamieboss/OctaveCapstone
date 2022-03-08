@@ -52,7 +52,12 @@ def user_query():
 @app.route('/playlist', methods=['POST'])
 @cross_origin()
 def playlist_query():
+    print("RECIEVED:")
     print(request.get_json())
+    for song in request.get_json():
+        #print(song)
+        i =0
+
     
     playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
     return jsonify(message=playlistLink)
