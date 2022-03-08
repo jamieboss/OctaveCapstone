@@ -49,5 +49,13 @@ def user_query():
     print(song_results)
     return jsonify(result=song_results)
 
+@app.route('/playlist', methods=['POST'])
+@cross_origin()
+def playlist_query():
+    print(request.get_json())
+    
+    playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
+    return jsonify(message=playlistLink)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8080", debug=True)
