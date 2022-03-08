@@ -103,8 +103,7 @@ function setDislike(i) {
 }
 
 function generatePlaylist() {
-  for (let i = 0; i < 4; i++) {
-    console.log(i)
+  for (let i = 0; i < 3; i++) {
     if (likes.songs[i] === 0) {
       delete postResponse[likes.keys[i]]
     }
