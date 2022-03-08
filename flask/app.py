@@ -1,8 +1,9 @@
 from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
+from itsdangerous import json
 import requests
 from search_examples import favSongs, favArtists
-from Main import main
+from Main import song_analysis
 
 app = Flask(__name__)
 CORS(app)
@@ -19,7 +20,7 @@ def user_query():
     '''
     This call to main will send over all of the input data from the front end over to the analysis function
     '''
-    #song_results = main(input)
+    #song_results = song_analysis(input)
     #return jsonify(result=song_results)
 
     '''
@@ -27,7 +28,7 @@ def user_query():
     This loop below iterates over each favorite song and returns its track id, name, and artist
     My spotify API is not working so these "results" are pulled from three manual hits to the API i made to get song data and I am treating it like a black box currently. 
     '''
-    '''
+    
     song_results = {}
     for hit in favSongs:
         track = hit["tracks"]["items"][0]
@@ -39,7 +40,7 @@ def user_query():
     print('REQUEST SENT:')
     print(song_results)
     return jsonify(result=song_results)
-    '''
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8080", debug=True)

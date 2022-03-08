@@ -8,18 +8,18 @@ from KMeans import kMeans, selectCluster
 from SongAnalysis import moodFilterCluster
 
 '''
-Format of user input parameter:
+#Format of user input parameter:
 input = {
-    'favSongs': [song1, song2, song3],
-    'favArtists': [artist1, artist2, artist3],
-    'favGenres': [genre1, genre2, genre3],
-    'activities': list [] of any length between 1 and 5 selected from {studying, working out, relaxing, driving, dancing}
-    'mood': string selected from {anxious, joyfull, energized, peaceful, sad, tired, angry}
-    'theme': string of any input
-    'number': non-zero integer
+    'favSongs': [song_1, song_2, song_3],
+    'favArtists': [artist_1, artist_2, artist_3],
+    'favGenres': [genre_1, genre_2, genre_3],
+    'activities': [],                                   # list [] of any length between 1 and 5 selected from {studying, working out, relaxing, driving, dancing}
+    'mood': " ",                                        # string selected from {anxious, joyfull, energized, peaceful, sad, tired, angry}
+    'theme': " ",                                       # string of any input
+    'number': 25                                        # non-zero integer denoting the number of songs to return
 }
 '''
-def main(input):
+def song_analysis(input):
     # read in csv file with artist name and uri pairs
     script_dir = os.getcwd()
     file = 'artist-uris.csv'
@@ -50,9 +50,15 @@ def main(input):
     # filter songs in the selected cluster based on the user selected mood
     moodSongs = moodFilterCluster(activitySongs, 'HAPPY')
 
+    
+    #Important! This is how song_results should be formatted in order for the front end to parse it correctly.
+    
     '''
-    Important! This is how song_results should be formatted in order for the front end to parse it correctly.
-    song_results = {track_id_1: [song_name, song_artist, spotify_external_link], ... , track_id_n: [song_name, song_artist, spotify_external_link]}
+    # Format of song_analysis output where n = input['number']
+    song_results = {
+        track_id_1: [song_name, song_artist, spotify_external_link],
+        ... , 
+        track_id_n: [song_name, song_artist, spotify_external_link]}
     '''
     song_results = {}
     return song_results
