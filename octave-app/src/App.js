@@ -36,6 +36,15 @@ function collectData() {
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
 
+  //Make sure likes/dislikes are unselected
+  document.getElementById("like0").classList.remove("active")
+  document.getElementById("dislike0").classList.remove("active")
+  document.getElementById("like1").classList.remove("active")
+  document.getElementById("dislike1").classList.remove("active")
+  document.getElementById("like2").classList.remove("active")
+  document.getElementById("dislike2").classList.remove("active")
+  likes.songs = []
+
   //Send to flask
   APIService.InsertQuery(userData)
   .then((response) => openPopup(response))
@@ -71,7 +80,7 @@ function openPopup2(response) {
   }
   closePopup("myModal")
   var modal = document.getElementById("myModal2");
-  modal.firstChild.childNodes[2].href = playlistUrl;
+  modal.firstChild.childNodes[3].href = playlistUrl;
   modal.style.display = "block";
 }
 

@@ -112,7 +112,7 @@ a {
 
 .dislike:hover,
 .like:hover, .active {
-  color: #2EBDD1;
+  color: rgb(175, 243, 166);
 }
 
 /* The Modal (background) */
