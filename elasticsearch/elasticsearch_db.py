@@ -1,4 +1,3 @@
-import os
 import json
 import logging
 from elasticsearch import Elasticsearch
@@ -18,15 +17,11 @@ class ElasticsearchDB:
         logging.info(f'Deleting index {index_name}')
         self.es.indices.delete(index=index_name, ignore=[400,404])
 
-    def store_record(self, index_name, doc):
+    def store_record(self, index_name, id, doc, r):
         logging.info(f'Writing document to ES index {index_name}')
-        res = self.es.index(index=index_name, document=json.dumps(doc), refresh = True)
+        res = self.es.index(index=index_name, id=id, document=json.dumps(doc), refresh = r)
 
     def search(self, index_name, query):
-        res = self.es.search(index=index_name, body=json.dumps(query))
+        res = self.es.search(index=index_name, size=10000, body=json.dumps(query))
         return res
-
-    def delete_index(self, index_name):
-        logging.info(f'Deleting index {index_name}.')
-        self.es.indices.delete(index_name, ignore=[400, 404])
 

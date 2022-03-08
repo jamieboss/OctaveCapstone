@@ -7,10 +7,31 @@
             "artist": {
                 "type": "text"
             },
-            "album": {
-                "type": "text"
+            "uri": {
+                "type":"text"
             },
-            "mood": {
+            "danceability": {
+                "type": "double"
+            },
+            "energy": {
+                "type": "double"
+            },
+            "loudness": {
+                "type": "double"
+            },
+            "speechiness": {
+                "type": "double"
+            },
+            "acousticness": {
+                "type": "double"
+            },
+            "instrumentalness": {
+                "type": "double"
+            },
+            "valence": {
+                "type": "double"
+            },
+            "tempo": {
                 "type": "double"
             }
         }
