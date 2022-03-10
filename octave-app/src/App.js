@@ -69,6 +69,7 @@ function openPopup(response) {
 function displayOutput(){
   var i = 0
   for (const key in postResponse) {
+    if (i > 2) {break}
     document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].textContent = postResponse[key][0] + ', ' + postResponse[key][1]
     document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].href = postResponse[key][2]
     likes.keys[i] = key
