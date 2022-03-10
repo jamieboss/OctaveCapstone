@@ -19,7 +19,8 @@ let userData = {
 }
 
 let likes = {
-  songs: []
+  songs: [],
+  keys: []
 }
 
 let postResponsemessage = ""
@@ -68,8 +69,10 @@ function openPopup(response) {
 function displayOutput(){
   var i = 0
   for (const key in postResponse) {
+    if (i > 2) {break}
     document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].textContent = postResponse[key][0] + ', ' + postResponse[key][1]
     document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].href = postResponse[key][2]
+    likes.keys[i] = key
     i++
   }
 }
@@ -101,7 +104,12 @@ function setDislike(i) {
 }
 
 function generatePlaylist() {
-  APIService.GetPlaylist(likes)
+  for (let i = 0; i < 3; i++) {
+    if (likes.songs[i] === 0) {
+      delete postResponse[likes.keys[i]]
+    }
+  }
+  APIService.GetPlaylist(postResponse)
   .then((response) => openPopup2(response))
   .catch(error => openPopup(error))
 }

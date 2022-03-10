@@ -3,6 +3,8 @@ from flask_cors import CORS, cross_origin
 import requests
 from search_examples import favSongs, favArtists
 
+from SpotifyOAuth import sp
+
 
 app = Flask(__name__)
 CORS(app)
@@ -52,9 +54,14 @@ def user_query():
 @app.route('/playlist', methods=['POST'])
 @cross_origin()
 def playlist_query():
-    print(request.get_json())
+    print("RECIEVED:")
+    print(request.get_json().keys())
+
+    #Create Playlist
+    playlist = sp.user_playlist_create('3147aozeyhiw7pg45aiywambxqq4', 'Test Playlist', True, False, 'Adding 0-3 songs')
+    sp.user_playlist_add_tracks('3147aozeyhiw7pg45aiywambxqq4', playlist["id"], request.get_json().keys())
     
-    playlistLink = "https://open.spotify.com/playlist/068wH7INPasnsH5HL8wBok"
+    playlistLink = "https://open.spotify.com/playlist/" + playlist["id"]
     return jsonify(message=playlistLink)
 
 if __name__ == "__main__":
