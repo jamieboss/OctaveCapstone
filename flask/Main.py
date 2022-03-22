@@ -62,3 +62,6 @@ def song_analysis(input):
     '''
     song_results = {}
     return song_results
+
+input = {}
+song_analysis(input)
