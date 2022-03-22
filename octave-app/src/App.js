@@ -5,6 +5,9 @@ import ColorPicker from './components/ColorPicker';
 import ActivityButton from './components/Selector';
 import APIService from './components/APIService';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+
 let userData = {
   favSongs: [],
   favArtists: [],
@@ -15,31 +18,14 @@ let userData = {
   number: 20
 }
 
+let likes = {
+  songs: [],
+  keys: []
+}
+
 let postResponsemessage = ""
 let postResponse = {}
-
-const getSong = (event, i)=>{
-  userData.favSongs[i] = event.target.value;
-}
-
-const getArtist = (event, i)=>{
-  userData.favArtists[i] = event.target.value;
-}
-
-const getGenre = (event, i)=>{
-  userData.favGenres[i] = event.target.value;
-}
-
-const getTheme = (event) => {
-  userData.theme = event.target.value;
-}
-
-const getNum = (event) => {
-  userData.number = parseInt(event.target.value);
-  if (!userData.number) {
-    userData.number = 20;
-  }
-}
+let playlistUrl = ""
 
 function collectData() {
   //Get activities
@@ -51,38 +37,81 @@ function collectData() {
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
 
+  //Make sure likes/dislikes are unselected
+  document.getElementById("like0").classList.remove("active")
+  document.getElementById("dislike0").classList.remove("active")
+  document.getElementById("like1").classList.remove("active")
+  document.getElementById("dislike1").classList.remove("active")
+  document.getElementById("like2").classList.remove("active")
+  document.getElementById("dislike2").classList.remove("active")
+  likes.songs = []
+
   //Send to flask
   APIService.InsertQuery(userData)
   .then((response) => openPopup(response))
   .catch(error => openPopup(error))
 }
 
-function displayOutput(){
-  var list_str = '<ul>'
-  for (const key in postResponse) {
-    list_str += '<li><a href="' + postResponse[key][2] + ' " target="_blank">'+ postResponse[key][0] + ', ' + postResponse[key][1] + '</a></li>';
-  }
-  list_str += '</ul>'
-  document.getElementById("myResult").innerHTML = list_str;
-}
-
 function openPopup(response) {
   if(response) {
-    postResponsemessage = "Success!"
+    postResponsemessage = "Success! Connected to Flask."
     postResponse=response.result;
+    displayOutput();
   }else{
-    postResponsemessage = "Error: could not connect to Flask";
+    postResponsemessage = "Error: could not connect to Flask.";
   }
   var modal = document.getElementById("myModal");
   modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.firstChild.childNodes[3].textContent = postResponsemessage
-  displayOutput();
   modal.style.display = "block";
 }
 
-function closePopup() {
-  var modal = document.getElementById("myModal");
+function displayOutput(){
+  var i = 0
+  for (const key in postResponse) {
+    if (i > 2) {break}
+    document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].textContent = postResponse[key][0] + ', ' + postResponse[key][1]
+    document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].href = postResponse[key][2]
+    likes.keys[i] = key
+    i++
+  }
+}
+
+function openPopup2(response) {
+  if(response) {
+    playlistUrl=response.message
+  }
+  closePopup("myModal")
+  var modal = document.getElementById("myModal2");
+  modal.firstChild.childNodes[3].href = playlistUrl;
+  modal.style.display = "block";
+}
+
+function closePopup(id) {
+  var modal = document.getElementById(id);
   modal.style.display = "none";
+}
+
+function setLike(i) {
+  likes.songs[i] = 1
+  document.getElementById("like"+i).classList.add("active")
+  document.getElementById("dislike"+i).classList.remove("active")
+}
+function setDislike(i) {
+  likes.songs[i] = 0
+  document.getElementById("like"+i).classList.remove("active")
+  document.getElementById("dislike"+i).classList.add("active")
+}
+
+function generatePlaylist() {
+  for (let i = 0; i < 3; i++) {
+    if (likes.songs[i] === 0) {
+      delete postResponse[likes.keys[i]]
+    }
+  }
+  APIService.GetPlaylist(postResponse)
+  .then((response) => openPopup2(response))
+  .catch(error => openPopup(error))
 }
 
 function App() {
@@ -98,15 +127,15 @@ function App() {
         <h3>Favorite Songs</h3>
         <h3>Favorite Artists</h3>
         <h3>Favorite Genres</h3>
-        <input onChange={(val) => getSong(val, 0)}></input>
-        <input onChange={(val) => getArtist(val, 0)}></input>
-        <input onChange={(val) => getGenre(val, 0)}></input>
-        <input onChange={(val) => getSong(val, 1)}></input>
-        <input onChange={(val) => getArtist(val, 1)}></input>
-        <input onChange={(val) => getGenre(val, 1)}></input>
-        <input onChange={(val) => getSong(val, 2)}></input>
-        <input onChange={(val) => getArtist(val, 2)}></input>
-        <input onChange={(val) => getGenre(val, 2)}></input>
+        <input onChange={(event) => userData.favSongs[0] = event.target.value}></input>
+        <input onChange={(event) => userData.favArtists[0] = event.target.value}></input>
+        <input onChange={(event) => userData.favGenres[0] = event.target.value}></input>
+        <input onChange={(event) => userData.favSongs[1] = event.target.value}></input>
+        <input onChange={(event) => userData.favArtists[1] = event.target.value}></input>
+        <input onChange={(event) => userData.favGenres[1] = event.target.value}></input>
+        <input onChange={(event) => userData.favSongs[2] = event.target.value}></input>
+        <input onChange={(event) => userData.favArtists[2] = event.target.value}></input>
+        <input onChange={(event) => userData.favGenres[2] = event.target.value}></input>
       </div> 
 
       <div className = "ActivitySelector">
@@ -125,10 +154,16 @@ function App() {
         </div>
       </div>
 
-      <h4>Add a specific theme:</h4>
-      <input onChange={(val) => getTheme(val)}></input>
-      <h4>Number of songs:</h4>
-      <input onChange={(val) => getNum(val)}></input>
+      <ul className = "ThemeNum">
+        <li>
+        <h4>Add a specific theme:</h4>
+        <input onChange={(event) => userData.theme = event.target.value}></input>
+        </li>
+        <li>
+        <h4>Number of songs:</h4>
+        <input onChange={(event) => userData.number = parseInt(event.target.value)}></input>
+        </li>
+      </ul>
 
       <div className = "Generate">
         <button onClick={collectData}>Generate Playlist</button>
@@ -136,12 +171,37 @@ function App() {
 
       <div id="myModal" className="modal">
         <div className="modal-content">
-          <span className="close" onClick={closePopup}>&times;</span>
+          <span className="close" onClick={()=> closePopup("myModal")}>&times;</span>
           <h4>User Data</h4>
           <p></p>
           <p></p>
-          {/* <a href="www.google.com" target="_blank">Playlist</a> */}
-          <div id="myResult" className="result"></div>
+          <h4>Do you like these songs?</h4>
+          <div id="myResult" className="result">
+            <ul>
+              <li><a href="test.com" target="_blank">Test1</a><div class="rating">
+                <div id="like0" class = "like" onClick={() => setLike(0)}><React.Fragment><FontAwesomeIcon icon={faThumbsUp}/></React.Fragment></div>
+                <div id="dislike0" class = "dislike" onClick={() => setDislike(0)}><FontAwesomeIcon icon = {faThumbsDown}/></div>
+              </div></li>
+              <li><a href="test.com" target="_blank">Test2</a><div class="rating">
+                <div id="like1" class = "like" onClick={() => setLike(1)}><React.Fragment><FontAwesomeIcon icon={faThumbsUp}/></React.Fragment></div>
+                <div id="dislike1" class = "dislike" onClick={() => setDislike(1)}><FontAwesomeIcon icon = {faThumbsDown}/></div>
+              </div></li>
+              <li><a href="test.com" target="_blank">Test3</a><div class="rating">
+                <div id="like2" class = "like" onClick={() => setLike(2)}><React.Fragment><FontAwesomeIcon icon={faThumbsUp}/></React.Fragment></div>
+                <div id="dislike2" class = "dislike" onClick={() => setDislike(2)}><FontAwesomeIcon icon = {faThumbsDown}/></div>
+              </div></li>
+            </ul>
+          </div>
+          <button onClick={generatePlaylist}>Continue</button>
+        </div>
+      </div>
+
+      <div id="myModal2" className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={()=> closePopup("myModal2")}>&times;</span>
+          <img src="./octavelogo.png" alt = "logo" width="240px"/>
+          <h4>Enjoy your playlist!</h4>
+          <a href="www.google.com" target="_blank">Click here</a>
         </div>
       </div>
 
