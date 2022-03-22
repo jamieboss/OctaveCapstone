@@ -30,9 +30,9 @@ songDf = getTracksAudioFeatures(songList)
 
 # use K-Means clustering to groups songs together based on the audio features
 featureLabels = ["danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "valence", "tempo"]
-clusterDf = kMeans(songDf, featureLabels)
+clusterDf, numClusters = kMeans(songDf, featureLabels)
 
 # determine what cluster to use based on the activity the user selected
-activitySongs = selectCluster(clusterDf, 1)
+activitySongs = selectCluster(clusterDf, numClusters, "Studying")
 # filter songs in the selected cluster based on the user selected mood
 moodSongs = moodFilterCluster(activitySongs, 'HAPPY')
