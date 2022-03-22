@@ -55,6 +55,8 @@ class Query:
                 track['tempo'] = doc["_source"]["tempo"]
                 tracks.append(track)
         return tracks
+
+# Example:
 # queries = Query()
 
 # tracks = queries.query(artist='Justin Bieber', name='Love Yourself')
