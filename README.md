@@ -24,7 +24,15 @@ In a new command terminal...
    - Run the python file elasticsearch/populate_elasticsearch.py 
    - This will populate 10,000 songs onto your local elasticsearch and it may take a while.
    - To actually query songs in the code, you should only have to start elasticsearch (#3), then run the query code.
-
+5. To easily query songs:
+   - Find a way to import query.py. If you are in a different directory, this may require something similar to what is in populate_elasticsearch.py (for some reason,   python has a hard time importing classes/functions from different directories)
+   - Once imported, just instaniate the Query class ( <variable_name> = Query() )
+   - <variable_name>.query(<parameters>)
+   - Just include <song_feature> = <value> as a parameter for each song feature you are querying.
+   - e.g.: <variable_name>.query(artist='Justin Bieber', name='Love Yourself')
+   - NOTE: For all song features that are numbers you need to use <song_feature> = [<from>, <to>]. i.e. it uses an array of 2 numbers as the range. If you want a specific value, use that value for the lower and upper value of the range.
+   - e.g.: <variable_name>.query(valence=[0.513, 0.513], danceability=[0.3, 0.6])
+   - You can include as many or as little song features in the parameters as you want.
 
 ## Running the Web Application
 In another new command terminal...
