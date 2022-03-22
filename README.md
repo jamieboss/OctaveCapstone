@@ -20,7 +20,7 @@ In a new command terminal...
 3. Run `.\bin\elasticsearch`
 4. To load the 10,000 songs into elasticsearch on your local (should only need to be done 1 time):
    - Ensure you have elasticsearch running (#3)
-   - Ensure you have ran: pip install spotipy, pip install elasticsearch, pip install numpy, pip install pandas
+   - Ensure you have ran: pip install spotipy, pip install elasticsearch==7.17.0, pip install numpy, pip install pandas
    - Run the python file elasticsearch/populate_elasticsearch.py 
    - This will populate 10,000 songs onto your local elasticsearch and it may take a while.
    - To actually query songs in the code, you should only have to start elasticsearch (#3), then run the query code.
