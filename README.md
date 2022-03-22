@@ -33,6 +33,7 @@ In a new command terminal...
    - NOTE: For all song features that are numbers you need to use <song_feature> = [<from>, <to>]. i.e. it uses an array of 2 numbers as the range. If you want a specific value, use that value for the lower and upper value of the range.
    - e.g.: <variable_name>.query(valence=[0.513, 0.513], danceability=[0.3, 0.6])
    - You can include as many or as little song features in the parameters as you want.
+   - It will return an array of tracks as dictionaries with the results.
 
 ## Running the Web Application
 In another new command terminal...
