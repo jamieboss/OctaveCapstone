@@ -34,13 +34,17 @@ def clusterRadarChart(df, featureLabels, numClusters):
 
     for cluster in range(numClusters):
         print(df.loc[df['cluster'] == cluster],'\n')
-        clusterAverages = df.loc[df['cluster'] == cluster, featureLabels].mean(numeric_only=True).array
+        clusterAverages = featureAverages(df, featureLabels, cluster)
         plt.plot(label_loc, [*clusterAverages, clusterAverages[0]], label='Cluster: ' + str(cluster))
 
     plt.title('Song clusters', size=20)
     lines, labels = plt.thetagrids(np.degrees(label_loc), labels=radarLabels)
     plt.legend()
     plt.show()
+
+# finds the average for each feature in the cluster
+def featureAverages(df, featureLabels, cluster):
+    return df.loc[df['cluster'] == cluster, featureLabels].mean(numeric_only=True).array
 
 # determines the number of features needed to reach 80% variance
 def optimalNumFeatures(xStd):
@@ -97,11 +101,11 @@ def kMeans(df, featureLabels):
         df.loc[:, feature] = (dfX[feature] - dfX[feature].min()) / (dfX[feature].max() - dfX[feature].min())
 
     # create a radar chart to visualize clustering based on all the features
-    # clusterRadarChart(df, featureLabels, numClusters)
+    clusterRadarChart(df, featureLabels, numClusters)
 
-    return df
+    return df, numClusters
 
 # TODO: alter this when we determine activity properties
 # select a cluster based on the activity selection by the user in the website and return the song ids
-def selectCluster(df, activity):
+def selectCluster(df, numClusters, activity):
     return df.loc[df['cluster'] == 1]['uri'].array

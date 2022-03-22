@@ -1,18 +1,28 @@
-from SpotifyOAuth import sp
+import numpy as np
 
-# vectors for each mood representing intensity, timbre, pitch, and rhythm
-HAPPY = [0.5, 0.5, 0.9, 0.9]
-EXUBERANT = [0.7, 0.5, 0.7, 0.7]
-ENERGETIC = [0.9, 0.5, 0.5, 0.7]
-FRANTIC = [0.7, 0.9, 0.3, 0.9]
-SAD = [0.5, 0.1, 0.1, 0.3]
-DEPRESSION = [0.3, 0.3, 0.3, 0.3]
-CALM = [0.1, 0.1, 0.5, 0.1]
-CONTENTMENT = [0.3, 0.3, 0.7, 0.3]
+from SpotifyOAuth import sp
 
 # function that will filter a given cluster based on mood using songs audio analysis
 def moodFilterCluster(cluster, mood):
-    print(len(cluster))
     for song in cluster:
-        anaylsis = sp.audio_analysis(song)
-    
+        pitch, timbre = pitchAndTimbre(song)
+
+        # print('\n', pitch)
+        # print(timbre, '\n')
+
+# gets a songs average pitch and timbre vectors
+def pitchAndTimbre(song):
+    pitchSum = np.zeros(12)
+    timbreSum = np.zeros(12)
+
+    segments = sp.audio_analysis(song)['segments']
+    for segment in segments:
+        pitchSum = np.add(pitchSum, segment['pitches'])
+        timbreSum = np.add(timbreSum, segment['timbre'])
+
+    averagePitch = pitchSum / len(segments)
+    averageTimbre = timbreSum / len(segments)
+
+    # normalize the pitch vector
+    normalPitch = [(averagePitch[i] - np.min(averagePitch))/(np.max(averagePitch) - np.min(averagePitch)) for i in range(12)]
+    return normalPitch, averageTimbre

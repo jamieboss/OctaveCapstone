@@ -1,11 +1,10 @@
-from email.policy import default
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 # authorization information
-CLIENT_ID = 'ecca6b6968774a20bc255c94ded4fbb4'
-CLIENT_SECRET = 'ccb019ba7bd9409f93f2527ea42f0e88'
-REDIRECT_URI = 'http://localhost'
+CLIENT_ID = 'f54a10c8ab084526a1df90b9c7f4f19f'
+CLIENT_SECRET = '2178e29186714432b61020743e950821'
+REDIRECT_URI = 'http://localhost:8888/callback'
 
 scope = 'user-library-read'
 
