@@ -4,7 +4,7 @@
 At the end of the project, we'll need to list our requirements needed for the application
 i.e
 `pip install spotipy`
-`pip install elasticsearch`
+`pip install elasticsearch==17.7.0`
 `pip install numpy`
 `pip install pandas`
 
