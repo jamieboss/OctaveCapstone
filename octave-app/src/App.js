@@ -23,6 +23,21 @@ let likes = {
   keys: []
 }
 
+let genres = [
+  "Alternative",
+  "Blues",
+  "Classical",
+  "Country",
+  "Dance",
+  "Electronic",
+  "Hip-Hop",
+  "Jazz",
+  "Metal",
+  "Pop",
+  "R&B",
+  "Rock"
+]
+
 let postResponsemessage = ""
 let postResponse = {}
 let playlistUrl = ""
@@ -114,6 +129,45 @@ function generatePlaylist() {
   .catch(error => openPopup(error))
 }
 
+function buildGenres(num) {
+  var model = document.getElementById("FavGenres");
+  var elem = model.childNodes.item(num)
+  for (let i = 0; i < genres.length; i++){
+      elem.innerHTML += "<option value=\"" + genres[i] + "\">" + genres[i] + "</option>";
+  }
+}
+
+function min(val, min, max) {
+  if (val > max) {
+    return max;
+  } else if (val < min) {
+    return min;
+  }
+  return val;
+}
+
+function validate(text) {
+  var i = 0;
+  if (text.length > 25) {
+    text = text.substring(0, 25);
+  }
+  while (i < text.length) {
+    var charCode = text.charCodeAt(i);
+    if (
+      charCode !== 32 &&                        // Space
+      !(charCode > 47 && charCode < 58) &&     // Numbers 0-9
+      !(charCode > 64 && charCode < 91) &&     // Uppercase A-Z
+      !(charCode > 96 && charCode < 123)       // Lowercase a-z
+      ) {
+        text = text.substring(0, i) + text.substring(i+1);
+    } else {
+      i++;
+    }
+  }
+  return text;
+}
+
+
 function App() {
 
   return (
@@ -123,47 +177,94 @@ function App() {
       </header>
 
       <h5 className="intro">Welcome to Octave, a custom Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
-      <div className = "FavInput">
+      
+      <form id="favorites">
         <h3>Favorite Songs</h3>
+        <div className = "FavSongs" id = "FavSongs">
+          <input onChange={(event) => userData.favSongs[0] = validate(event.target.value)} id="favSong1"></input>
+          <input onChange={(event) => userData.favSongs[1] = validate(event.target.value)} id="favSong2"></input>
+          <input onChange={(event) => userData.favSongs[2] = validate(event.target.value)} id="favSong3"></input>
+        </div> 
+
         <h3>Favorite Artists</h3>
-        <h3>Favorite Genres</h3>
-        <input onChange={(event) => userData.favSongs[0] = event.target.value}></input>
-        <input onChange={(event) => userData.favArtists[0] = event.target.value}></input>
-        <input onChange={(event) => userData.favGenres[0] = event.target.value}></input>
-        <input onChange={(event) => userData.favSongs[1] = event.target.value}></input>
-        <input onChange={(event) => userData.favArtists[1] = event.target.value}></input>
-        <input onChange={(event) => userData.favGenres[1] = event.target.value}></input>
-        <input onChange={(event) => userData.favSongs[2] = event.target.value}></input>
-        <input onChange={(event) => userData.favArtists[2] = event.target.value}></input>
-        <input onChange={(event) => userData.favGenres[2] = event.target.value}></input>
-      </div> 
-
-      <div className = "ActivitySelector">
-        <h2>What are you doing?</h2>
-        <ActivityButton name = "Studying"/>
-        <ActivityButton name = "Working out"/>
-        <ActivityButton name = "Relaxing"/>
-        <ActivityButton name = "Driving"/>
-        <ActivityButton name = "Dancing"/>
-      </div>
-
-      <div className = "MoodSelector">
-        <h2>How are you feeling?</h2>
-        <div className = "Slider">
-          <ColorPicker/>
+        <div className = "FavArtists" id = "FavArtists">
+          <input onChange={(event) => userData.favArtists[0] = validate(event.target.value)} id="favGenre1"></input>
+          <input onChange={(event) => userData.favArtists[1] = validate(event.target.value)} id="favGenre2"></input>
+          <input onChange={(event) => userData.favArtists[2] = validate(event.target.value)} id="favGenre3"></input>
         </div>
-      </div>
+      </form>
+              
+        <h3>Favorite Genres</h3>
+        <div className = "FavGenres" id = "FavGenres">
+          <select onChange={(event) => userData.favGenres[0] = event.target.value} name="genre1" id="genre1">
+            <option value="Alternative">Alternative</option>
+            <option value="Blues">Blues</option>
+            <option value="Classical">Classical</option>
+            <option value="Country">Country</option>
+            <option value="Dance">Dance</option>
+            <option value="Electronic">Electronic</option>
+            <option value="Hip-Hop">Hip-Hop</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Metal">Metal</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+          </select>
 
-      <ul className = "ThemeNum">
-        <li>
-        <h4>Add a specific theme:</h4>
-        <input onChange={(event) => userData.theme = event.target.value}></input>
-        </li>
-        <li>
-        <h4>Number of songs:</h4>
-        <input onChange={(event) => userData.number = parseInt(event.target.value)}></input>
-        </li>
-      </ul>
+        <select onChange={(event) => userData.favGenres[1] = event.target.value} name="genre2" id="genre2">
+          <option value="Alternative">Alternative</option>
+            <option value="Blues">Blues</option>
+            <option value="Classical">Classical</option>
+            <option value="Country">Country</option>
+            <option value="Dance">Dance</option>
+            <option value="Electronic">Electronic</option>
+            <option value="Hip-Hop">Hip-Hop</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Metal">Metal</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+        </select>
+
+        <select onChange={(event) => userData.favGenres[2] = event.target.value} name="genre3" id="genre3">
+          <option value="Alternative">Alternative</option>
+            <option value="Blues">Blues</option>
+            <option value="Classical">Classical</option>
+            <option value="Country">Country</option>
+            <option value="Dance">Dance</option>
+            <option value="Electronic">Electronic</option>
+            <option value="Hip-Hop">Hip-Hop</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Metal">Metal</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+          </select>
+        </div>
+
+        <div className = "ActivitySelector">
+          <h2>What are you doing?</h2>
+          <ActivityButton name = "Studying"/>
+          <ActivityButton name = "Working out"/>
+          <ActivityButton name = "Relaxing"/>
+          <ActivityButton name = "Driving"/>
+          <ActivityButton name = "Dancing"/>
+        </div>
+
+        <div className = "MoodSelector">
+          <h2>How are you feeling?</h2>
+          <div className = "Slider">
+            <ColorPicker/>
+          </div>
+        </div>
+
+        <ul className = "ThemeNum">
+          <li>
+          <h4>Add a specific theme:</h4>
+          <input onChange={(event) => userData.theme = validate(event.target.value)}></input>
+          </li>
+          <li>
+          <h4>Number of songs (10-99):</h4>
+          <input type = "number" min = "10" max = "99" onChange={(event) => userData.number = min(event.target.value, 10, 99)}></input>
+          </li>
+        </ul>
 
       <div className = "Generate">
         <button onClick={collectData}>Generate Playlist</button>
