@@ -148,9 +148,6 @@ function min(val, min, max) {
 
 function validate(text) {
   var i = 0;
-  if (text.length > 25) {
-    text = text.substring(0, 25);
-  }
   while (i < text.length) {
     var charCode = text.charCodeAt(i);
     if (
@@ -181,16 +178,16 @@ function App() {
       <form id="favorites">
         <h3>Favorite Songs</h3>
         <div className = "FavSongs" id = "FavSongs">
-          <input onChange={(event) => userData.favSongs[0] = validate(event.target.value)} id="favSong1"></input>
-          <input onChange={(event) => userData.favSongs[1] = validate(event.target.value)} id="favSong2"></input>
-          <input onChange={(event) => userData.favSongs[2] = validate(event.target.value)} id="favSong3"></input>
+          <input maxlength = "25" onChange={(event) => userData.favSongs[0] = validate(event.target.value)} id="favSong1"></input>
+          <input maxlength = "25" onChange={(event) => userData.favSongs[1] = validate(event.target.value)} id="favSong2"></input>
+          <input maxlength = "25" onChange={(event) => userData.favSongs[2] = validate(event.target.value)} id="favSong3"></input>
         </div> 
 
         <h3>Favorite Artists</h3>
         <div className = "FavArtists" id = "FavArtists">
-          <input onChange={(event) => userData.favArtists[0] = validate(event.target.value)} id="favGenre1"></input>
-          <input onChange={(event) => userData.favArtists[1] = validate(event.target.value)} id="favGenre2"></input>
-          <input onChange={(event) => userData.favArtists[2] = validate(event.target.value)} id="favGenre3"></input>
+          <input maxlength = "25" onChange={(event) => userData.favArtists[0] = validate(event.target.value)} id="favGenre1"></input>
+          <input maxlength = "25" onChange={(event) => userData.favArtists[1] = validate(event.target.value)} id="favGenre2"></input>
+          <input maxlength = "25" onChange={(event) => userData.favArtists[2] = validate(event.target.value)} id="favGenre3"></input>
         </div>
       </form>
               
@@ -258,7 +255,7 @@ function App() {
         <ul className = "ThemeNum">
           <li>
           <h4>Add a specific theme:</h4>
-          <input onChange={(event) => userData.theme = validate(event.target.value)}></input>
+          <input maxlength = "25" onChange={(event) => userData.theme = validate(event.target.value)}></input>
           </li>
           <li>
           <h4>Number of songs (10-99):</h4>
