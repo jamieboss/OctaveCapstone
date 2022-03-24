@@ -34,6 +34,8 @@ In a new command terminal...
    - e.g.: <variable_name>.query(valence=[0.513, 0.513], danceability=[0.3, 0.6])
    - You can include as many or as little song features in the parameters as you want.
    - It will return an array of tracks as dictionaries with the results.
+### Notes:
+To get rid of `ElasticsearchDeprecationWarning`, add this line in your configuration `elasticsearch.yml`: `xpack.security.enabled: false`
 
 ## Running the Web Application
 In another new command terminal...
