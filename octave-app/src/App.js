@@ -164,6 +164,9 @@ function validate(text) {
   return text;
 }
 
+function clean(text) {
+  
+}
 
 function App() {
 
