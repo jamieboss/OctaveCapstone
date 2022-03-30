@@ -57,8 +57,9 @@ class Query:
         return tracks
 
 # Example:
-# queries = Query()
+if __name__ == "__main__":
+    queries = Query()
 
-# tracks = queries.query(artist='Justin Bieber', name='Love Yourself')
-# for track in tracks:
-#     print(track)
+    tracks = queries.query(artist='Justin Bieber', name='Love Yourself')
+    for track in tracks:
+        print(track)
