@@ -4,14 +4,16 @@ import sys
 import os
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
-sys.path.append(parent + '\spotify_scripts')
+#sys.path.append(parent + '\spotify_scripts')
+sys.path.append(parent + '/spotify_scripts')
 import SongFeatures
 
 # Create the elasticsearch_db object
 es_db = ElasticsearchDB()
 
 # Create song index
-mapping_file = os.path.dirname(os.path.realpath(__file__)) + '\song_mapping.json'
+#mapping_file = os.path.dirname(os.path.realpath(__file__)) + '\song_mapping.json'
+mapping_file = os.path.dirname(os.path.realpath(__file__)) + '/song_mapping.json'
 with open(mapping_file) as f: # Load the song mapping json from this directory.
     song_mapping = json.load(f)
 es_db.create_index('songs', song_mapping)

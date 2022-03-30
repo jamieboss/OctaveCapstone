@@ -5,7 +5,8 @@ from elasticsearch import Elasticsearch
 class ElasticsearchDB:
 
     def __init__(self):
-        self.es = Elasticsearch([{'host': 'localhost', 'port': 9200}]) # Change once we have shared elasticsearch
+        #self.es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+        self.es = Elasticsearch("http://localhost:9200")
         logging.info(self.es.ping())
 
     def create_index(self, index_name, mapping):
