@@ -29,13 +29,18 @@ class Query:
         if tempo != [0, 1015]:
             items.append({'range': {'tempo': {'lte': tempo[1], 'gte': tempo[0]}}})
 
-        combined_query ={'query':
-                            {'bool':
-                                {'must':
-                                    items
-                                }
-                            }
+        # combined_query ={'query':
+        #                     {'bool':
+        #                         {'must':
+        #                             items
+        #                         }
+        #                     }
+        #                 }
+        combined_query ={'bool':
+                        {'must':
+                            items
                         }
+                    }
 
         tracks = []
         results = self.es_db.search('songs', combined_query)

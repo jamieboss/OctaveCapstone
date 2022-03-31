@@ -23,6 +23,8 @@ class ElasticsearchDB:
         res = self.es.index(index=index_name, id=id, document=json.dumps(doc), refresh = r)
 
     def search(self, index_name, query):
-        res = self.es.search(index=index_name, size=10000, body=json.dumps(query))
+        print("TEST")
+        print(json.dumps(query))
+        res = self.es.search(index=index_name, size=10000, query=json.dumps(query))
         return res
 
