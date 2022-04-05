@@ -5,6 +5,12 @@ from search_examples import favSongs, favArtists
 
 from SpotifyOAuth import sp
 
+import os, sys
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+#sys.path.append(parent + '\elasticsearch')
+sys.path.append(parent + '/elasticsearch')
+import query
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +23,8 @@ def user_query():
     req = request.get_json()
     print('REQUEST RECEIVED:')
     print(req)
+
+    esQuery = query.Query()
     
     artist_results = {}
     for hit in favArtists: # favArtists will be replaced with req['favArtist']
