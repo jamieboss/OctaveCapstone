@@ -7,6 +7,7 @@ i.e
 `pip install elasticsearch==7.17.0`  
 `pip install numpy`  
 `pip install pandas`
+`npm i react-scripts`
 
 
 ## Opening the Flask Back-End Port
