@@ -7,9 +7,9 @@ class Query:
     def query(self, name = '', artist = '', uri = '', danceability = [0, 1], energy = [0, 1], loudness = [-60, 0], speechiness = [0, 1], acousticness = [0, 1], instrumentalness = [0, 1], valence = [0, 1], tempo = [0, 1015]):
         items = []
         if name != '':
-            items.append({'match': {'name': {'query': name, 'operator': 'AND'}}})
+            items.append({'match': {'name': {'query': name, 'operator': 'AND', 'fuzziness': 'AUTO'}}})
         if artist != '':
-            items.append({'match': {'artist': {'query': artist, 'operator': 'AND'}}})
+            items.append({'match': {'artist': {'query': artist, 'operator': 'AND', 'fuzziness': 'AUTO'}}})
         if uri != '':
             items.append({'match': {'uri': {'query': uri}}})
         if danceability != [0, 1]:
