@@ -25,31 +25,19 @@ def user_query():
     print(req)
 
     esQuery = query.Query()
-    
-    artist_results = {}
-    for hit in favArtists: # favArtists will be replaced with req['favArtist']
+
+    song_results = {}
+    for song in req['favSongs']: # favArtists will be replaced with req['favArtist']
         # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
         # es.search(...) to search for artist via elastic search
-        artist = hit["artists"]["items"][0]
-        artist_id = artist["id"]
-        artist_results[artist_id] = artist["name"]
-    print(artist_results)
-    '''
-    Example: 
-    This loop below iterates over each favorite song and returns its track id, name, and artist
-    My spotify API is not working so these "results" are pulled from three manual hits to the API i made to get song data and I am treating it like a black box currently. 
-    '''
-    song_results = {}
-    for hit in favSongs:
-        track = hit["tracks"]["items"][0]
-        track_id = track["id"]
-        song_results[track_id] = []
-        song_results[track_id].append(track["name"])
-        song_results[track_id].append(track["artists"][0]["name"])
-        song_results[track_id].append(track["external_urls"]["spotify"])
-
-
-    #TODO Replace above examples with desired analysis to gather playlist
+        if len(song) > 0:
+            matches = esQuery.query(name=song)
+            if matches:
+                track_id = matches[0]['uri'].split(':')[-1]
+                song_results[track_id] = []
+                song_results[track_id].append(matches[0]["name"])
+                song_results[track_id].append(matches[0]["artist"])
+                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
     
     '''
     Important! This is how song_results should be formatted in order for the front end to parse it correctly.
