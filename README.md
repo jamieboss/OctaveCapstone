@@ -6,7 +6,7 @@ i.e
 `pip install spotipy`  
 `pip install elasticsearch==7.17.0`  
 `pip install numpy`  
-`pip install pandas`
+`pip install pandas`  
 `npm i react-scripts`
 
 
