@@ -1,6 +1,6 @@
 from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
-import requests
+import requests, random
 from search_examples import favSongs, favArtists
 
 from SpotifyOAuth import sp
@@ -27,7 +27,7 @@ def user_query():
     esQuery = query.Query()
 
     song_results = {}
-    for song in req['favSongs']: # favArtists will be replaced with req['favArtist']
+    for song in req['favSongs']:
         # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
         # es.search(...) to search for artist via elastic search
         if len(song) > 0:
@@ -37,6 +37,18 @@ def user_query():
                 song_results[track_id] = []
                 song_results[track_id].append(matches[0]["name"])
                 song_results[track_id].append(matches[0]["artist"])
+                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+
+    for artist1 in req['favArtists']:
+        # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
+        # es.search(...) to search for artist via elastic search
+        if len(artist1) > 0:
+            matches = esQuery.query(artist=artist1)
+            for track in random.sample(matches[:25], 3):
+                track_id = track['uri'].split(':')[-1]
+                song_results[track_id] = []
+                song_results[track_id].append(track["name"])
+                song_results[track_id].append(track["artist"])
                 song_results[track_id].append("https://open.spotify.com/track/"+track_id)
     
     '''
