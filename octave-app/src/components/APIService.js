@@ -1,6 +1,6 @@
 export default class APIService{
     static InsertQuery(body){
-        return fetch('http://localhost:8080/data', {
+        return fetch('http://localhost:5000/data', {
             'method': 'POST',
             headers : {
                 'Content-Type': 'application/json'
@@ -12,7 +12,7 @@ export default class APIService{
     }
 
     static GetPlaylist(body){
-        return fetch('http://localhost:8080/playlist', {
+        return fetch('http://localhost:5000/playlist', {
             'method': 'POST',
             headers : {
                 'Content-Type': 'application/json'

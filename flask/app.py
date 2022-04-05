@@ -2,7 +2,11 @@ from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
 import requests
 from search_examples import favSongs, favArtists
-
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent + '\spotify_scripts')
 from SpotifyOAuth import sp
 
 
