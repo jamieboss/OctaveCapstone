@@ -16,7 +16,7 @@ i.e
 
 ## Starting up ElasticSearch
 In a new command terminal...
-1. Download Elasticsearch if you have not already: https://www.elastic.co/guide/en/elasticsearch/reference/current/zip-windows.html
+1. Download Elasticsearch if you have not already: https://www.elastic.co/downloads/past-releases#elasticsearch. **Make sure to download one of the 7.17 versions.**
 2. In a terminal window, `cd` to elasticsearch directory you just downloaded
 3. Run `.\bin\elasticsearch`
 4. To load the 10,000 songs into elasticsearch on your local (should only need to be done 1 time):
