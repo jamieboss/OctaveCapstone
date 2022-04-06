@@ -1,7 +1,7 @@
 from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
 import requests, random
-from search_examples import favSongs, favArtists
+from featureMaps import mood_features, action_features
 
 from SpotifyOAuth import sp
 
@@ -45,6 +45,25 @@ def user_query():
         if len(artist1) > 0:
             matches = esQuery.query(artist=artist1)
             for track in random.sample(matches[:25], 3):
+                track_id = track['uri'].split(':')[-1]
+                song_results[track_id] = []
+                song_results[track_id].append(track["name"])
+                song_results[track_id].append(track["artist"])
+                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+    
+    for activity in req['activities']:
+        matchFeatures = action_features[activity.upper()]
+        matches = esQuery.query(acousticness = matchFeatures['acousticness'], danceability=matchFeatures['danceability'], energy=matchFeatures['energy'], speechiness=matchFeatures['speechiness'], tempo=matchFeatures['tempo'], valence=matchFeatures['valence'])
+        for track in random.sample(matches, 5):
+                track_id = track['uri'].split(':')[-1]
+                song_results[track_id] = []
+                song_results[track_id].append(track["name"])
+                song_results[track_id].append(track["artist"])
+                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+
+    matchFeatures = mood_features[req['mood'].upper()]
+    matches = esQuery.query(acousticness = matchFeatures['acousticness'], danceability=matchFeatures['danceability'], energy=matchFeatures['energy'], speechiness=matchFeatures['speechiness'], tempo=matchFeatures['tempo'], valence=matchFeatures['valence'])
+    for track in random.sample(matches, 5):
                 track_id = track['uri'].split(':')[-1]
                 song_results[track_id] = []
                 song_results[track_id].append(track["name"])
