@@ -3,6 +3,12 @@ from flask_cors import CORS, cross_origin
 import requests, random
 from featureMaps import mood_features, action_features
 
+from search_examples import favSongs, favArtists
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent + '\spotify_scripts')
 from SpotifyOAuth import sp
 
 import os, sys

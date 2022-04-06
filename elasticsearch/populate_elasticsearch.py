@@ -6,6 +6,7 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent + '\spotify_scripts')
 import SongFeatures
+from query import Query
 
 # Create the elasticsearch_db object
 es_db = ElasticsearchDB()
@@ -27,7 +28,7 @@ for i, song in enumerate(songList):
 print('Stored all songs in Elasticsearch database')
 
 # Test to see if all songs are returned when queried
-search_object = {'query': {'match_all': {}}}
-results = es_db.search('songs', search_object)
-for i, doc in enumerate(results['hits']['hits']):
-    print(f'Hit {i+1}: {doc["_source"]["name"]}')
+q = Query()
+results = q.query()
+for i, track in enumerate(results):
+    print(f'Hit {i+1}: {track}')
