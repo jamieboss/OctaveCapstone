@@ -7,7 +7,7 @@ import os, sys
 from search_examples import favSongs, favArtists
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
-sys.path.append(parent + '\spotify_scripts')
+#sys.path.append(parent + '\spotify_scripts')
 from SpotifyOAuth import sp
 
 sys.path.append(parent + '\elasticsearch')
@@ -91,6 +91,7 @@ def playlist_query():
     sp.user_playlist_add_tracks('3147aozeyhiw7pg45aiywambxqq4', playlist["id"], request.get_json().keys())
     
     playlistLink = "https://open.spotify.com/playlist/" + playlist["id"]
+    print(playlistLink)
     return jsonify(message=playlistLink)
 
 if __name__ == "__main__":
