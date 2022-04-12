@@ -27,7 +27,6 @@ def user_query():
     print(req)
 
     esQuery = query.Query()
-
     song_results = {}
     for song in req['favSongs']:
         # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
@@ -84,11 +83,14 @@ def user_query():
 @cross_origin()
 def playlist_query():
     print("RECIEVED:")
-    print(request.get_json().keys())
-
+    req = request.get_json()
+    print(req)
+    playlist_name = 'No Name Playlist'
+    if 'name' in req.keys():
+        playlist_name = req.pop('name')
     #Create Playlist
-    playlist = sp.user_playlist_create('3147aozeyhiw7pg45aiywambxqq4', 'Test Playlist', True, False, 'Adding 0-3 songs')
-    sp.user_playlist_add_tracks('3147aozeyhiw7pg45aiywambxqq4', playlist["id"], request.get_json().keys())
+    playlist = sp.user_playlist_create('3147aozeyhiw7pg45aiywambxqq4', playlist_name, True, False, 'Enjoy your playlist! - Octave')
+    sp.user_playlist_add_tracks('3147aozeyhiw7pg45aiywambxqq4', playlist["id"], req.keys())
     
     playlistLink = "https://open.spotify.com/playlist/" + playlist["id"]
     print(playlistLink)

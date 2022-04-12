@@ -32,11 +32,27 @@ h4 {
   padding-top: 12px;
 }
 
-.FavInput {
+.FavSongs {
   display: grid;
-  grid-template-columns: repeat(3, 240px);
-  grid-column-gap: 60px;
-  grid-row-gap:24px;
+  grid-template-columns: repeat(3, 200px);
+  grid-column-gap: 30px;
+  grid-row-gap: 12px;
+  justify-content: center;
+}
+
+.FavArtists {
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  grid-column-gap: 30px;
+  grid-row-gap: 12px;
+  justify-content: center;
+}
+
+.FavGenres {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-column-gap: 30px;
+  grid-row-gap: 12px;
   justify-content: center;
 }
 
@@ -81,14 +97,14 @@ a {
   width: 900px!important;
 }
 
-.ThemeNum {
+.NameNum {
   align-items: center;
   justify-content: center;
   margin: auto;
   padding-bottom: 24px;
 }
 
-.ThemeNum li {
+.NameNum li {
   margin-left: 24px;
   margin-right: 24px;
 }
