@@ -28,6 +28,8 @@ def user_query():
 
     esQuery = query.Query()
 
+    numSongs = int(req['number'])
+
     song_results = {}
     for song in req['favSongs']:
         # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
@@ -40,38 +42,58 @@ def user_query():
                 song_results[track_id].append(matches[0]["name"])
                 song_results[track_id].append(matches[0]["artist"])
                 song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                numSongs -= 1
 
     for artist1 in req['favArtists']:
         # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
         # es.search(...) to search for artist via elastic search
         if len(artist1) > 0:
             matches = esQuery.query(artist=artist1)
-            for track in random.sample(matches[:25], 3):
-                track_id = track['uri'].split(':')[-1]
-                song_results[track_id] = []
-                song_results[track_id].append(track["name"])
-                song_results[track_id].append(track["artist"])
-                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+            if (len(matches) >= 3):
+                for track in random.sample(matches, 3):
+                    track_id = track['uri'].split(':')[-1]
+                    song_results[track_id] = []
+                    song_results[track_id].append(track["name"])
+                    song_results[track_id].append(track["artist"])
+                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                    numSongs -= 1
+
     
     for activity in req['activities']:
         matchFeatures = action_features[activity.upper()]
         matches = esQuery.query(acousticness = matchFeatures['acousticness'], danceability=matchFeatures['danceability'], energy=matchFeatures['energy'], speechiness=matchFeatures['speechiness'], tempo=matchFeatures['tempo'], valence=matchFeatures['valence'])
-        for track in random.sample(matches, 5):
+        numActivitySongs = int(numSongs/(2*len(req['activities']))) if int(numSongs/(2*len(req['activities']))) < len(matches) else len(matches)
+        for track in random.sample(matches, numActivitySongs):
                 track_id = track['uri'].split(':')[-1]
                 song_results[track_id] = []
                 song_results[track_id].append(track["name"])
                 song_results[track_id].append(track["artist"])
                 song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                numSongs -= 1
 
     matchFeatures = mood_features[req['mood'].upper()]
     matches = esQuery.query(acousticness = matchFeatures['acousticness'], danceability=matchFeatures['danceability'], energy=matchFeatures['energy'], speechiness=matchFeatures['speechiness'], tempo=matchFeatures['tempo'], valence=matchFeatures['valence'])
-    for track in random.sample(matches, 5):
+    numMoodSongs = numSongs if numSongs < len(matches) else len(matches)
+    for track in random.sample(matches, numMoodSongs):
                 track_id = track['uri'].split(':')[-1]
                 song_results[track_id] = []
                 song_results[track_id].append(track["name"])
                 song_results[track_id].append(track["artist"])
                 song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-    
+                numSongs -= 1
+
+    if numSongs > 0:
+        matches = esQuery.query() # Ran out of songs for this users preferences. Get random songs to fill rest of number of songs. (Okay since we have small sized data set)
+        while numSongs > 0:
+            numFillSongs = numSongs
+            for track in random.sample(matches, numFillSongs):
+                track_id = track['uri'].split(':')[-1]
+                if not(track_id in song_results) and numSongs > 0:
+                    song_results[track_id] = []
+                    song_results[track_id].append(track["name"])
+                    song_results[track_id].append(track["artist"])
+                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                    numSongs -= 1
     '''
     Important! This is how song_results should be formatted in order for the front end to parse it correctly.
     song_results = {track_id_1: [song_name, song_artist, spotify_link], ... , track_id_n: [song_name, song_artist, spotify_link]}
