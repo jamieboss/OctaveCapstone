@@ -14,7 +14,7 @@ let userData = {
   favGenres: [],
   activities: [],
   mood: "peaceful",
-  theme: " ",
+  name: " ",
   number: 20
 }
 
@@ -124,6 +124,7 @@ function generatePlaylist() {
       delete postResponse[likes.keys[i]]
     }
   }
+  postResponse['name'] = userData.name
   APIService.GetPlaylist(postResponse)
   .then((response) => openPopup2(response))
   .catch(error => openPopup(error))
@@ -255,14 +256,14 @@ function App() {
           </div>
         </div>
 
-        <ul className = "ThemeNum">
+        <ul className = "NameNum">
           <li>
-          <h4>Add a specific theme:</h4>
-          <input maxlength = "25" onChange={(event) => userData.theme = validate(event.target.value)}></input>
+            <h4>Playlist Name:</h4>
+            <input maxlength = "25" onChange={(event) => userData.name = validate(event.target.value)}></input>
           </li>
           <li>
-          <h4>Number of songs (10-99):</h4>
-          <input type = "number" min = "10" max = "99" onChange={(event) => userData.number = min(event.target.value, 10, 99)}></input>
+            <h4>Number of Songs(10-99):</h4>
+            <input type = "number" min = "10" max = "99" onChange={(event) => userData.number = min(event.target.value, 10, 99)}></input>
           </li>
         </ul>
 

@@ -38,11 +38,12 @@ def user_query():
             matches = esQuery.query(name=song)
             if matches:
                 track_id = matches[0]['uri'].split(':')[-1]
-                song_results[track_id] = []
-                song_results[track_id].append(matches[0]["name"])
-                song_results[track_id].append(matches[0]["artist"])
-                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                numSongs -= 1
+                if not(track_id in song_results) and numSongs > 0:
+                    song_results[track_id] = []
+                    song_results[track_id].append(matches[0]["name"])
+                    song_results[track_id].append(matches[0]["artist"])
+                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                    numSongs -= 1
 
     for artist1 in req['favArtists']:
         # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
@@ -52,11 +53,12 @@ def user_query():
             if (len(matches) >= 3):
                 for track in random.sample(matches, 3):
                     track_id = track['uri'].split(':')[-1]
-                    song_results[track_id] = []
-                    song_results[track_id].append(track["name"])
-                    song_results[track_id].append(track["artist"])
-                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                    numSongs -= 1
+                    if not(track_id in song_results) and numSongs > 0:
+                        song_results[track_id] = []
+                        song_results[track_id].append(track["name"])
+                        song_results[track_id].append(track["artist"])
+                        song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                        numSongs -= 1
 
     
     for activity in req['activities']:
@@ -65,22 +67,24 @@ def user_query():
         numActivitySongs = int(numSongs/(2*len(req['activities']))) if int(numSongs/(2*len(req['activities']))) < len(matches) else len(matches)
         for track in random.sample(matches, numActivitySongs):
                 track_id = track['uri'].split(':')[-1]
-                song_results[track_id] = []
-                song_results[track_id].append(track["name"])
-                song_results[track_id].append(track["artist"])
-                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                numSongs -= 1
+                if not(track_id in song_results) and numSongs > 0:
+                    song_results[track_id] = []
+                    song_results[track_id].append(track["name"])
+                    song_results[track_id].append(track["artist"])
+                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                    numSongs -= 1
 
     matchFeatures = mood_features[req['mood'].upper()]
     matches = esQuery.query(acousticness = matchFeatures['acousticness'], danceability=matchFeatures['danceability'], energy=matchFeatures['energy'], speechiness=matchFeatures['speechiness'], tempo=matchFeatures['tempo'], valence=matchFeatures['valence'])
     numMoodSongs = numSongs if numSongs < len(matches) else len(matches)
     for track in random.sample(matches, numMoodSongs):
                 track_id = track['uri'].split(':')[-1]
-                song_results[track_id] = []
-                song_results[track_id].append(track["name"])
-                song_results[track_id].append(track["artist"])
-                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                numSongs -= 1
+                if not(track_id in song_results) and numSongs > 0:
+                    song_results[track_id] = []
+                    song_results[track_id].append(track["name"])
+                    song_results[track_id].append(track["artist"])
+                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                    numSongs -= 1
 
     if numSongs > 0:
         matches = esQuery.query() # Ran out of songs for this users preferences. Get random songs to fill rest of number of songs. (Okay since we have small sized data set)
@@ -106,11 +110,14 @@ def user_query():
 @cross_origin()
 def playlist_query():
     print("RECIEVED:")
-    print(request.get_json().keys())
-
+    req = request.get_json()
+    print(req)
+    playlist_name = 'No Name Playlist'
+    if 'name' in req.keys():
+        playlist_name = req.pop('name')
     #Create Playlist
-    playlist = sp.user_playlist_create('3147aozeyhiw7pg45aiywambxqq4', 'Test Playlist', True, False, 'Adding 0-3 songs')
-    sp.user_playlist_add_tracks('3147aozeyhiw7pg45aiywambxqq4', playlist["id"], request.get_json().keys())
+    playlist = sp.user_playlist_create('3147aozeyhiw7pg45aiywambxqq4', playlist_name, True, False, 'Enjoy your playlist! - Octave')
+    sp.user_playlist_add_tracks('3147aozeyhiw7pg45aiywambxqq4', playlist["id"], req.keys())
     
     playlistLink = "https://open.spotify.com/playlist/" + playlist["id"]
     print(playlistLink)
