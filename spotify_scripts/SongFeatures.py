@@ -70,8 +70,9 @@ def addTracksToDataframe(trackDf, trackIds, startIndex, stopIndex):
 
     for track, features in zip(trackInfo, audioFeatures):
         feature_subset = [features[feature] for feature in features if feature in ["acousticness", "danceability", "energy", "instrumentalness", "loudness", "speechiness", "valence", "tempo"]]
-        row = [track['name'], track['artists'][0]['name'], track['uri'], *feature_subset]
-        trackDf.loc[len(trackDf)] = row
+        if len(feature_subset) == 8:
+            row = [track['name'], track['artists'][0]['name'], track['uri'], *feature_subset]
+            trackDf.loc[len(trackDf)] = row
 
 # Getting ~10000 songs and all the features for them from a huge spotify playlist. This is good enough for our purposes to populate elastic search.
 def get_tracks_for_es(limit=100):

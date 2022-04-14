@@ -75,3 +75,11 @@ def artistGeneratedTracks(artistId):
 
     # makes sure all tracks in the list are unique
     return np.unique(np.array(randomTracks)), relatedArtistIds
+
+# given a genre return a list of n tracks in that given genre
+def genreGeneratedTracks(genre, n = 10):
+    tracks = []
+    songs = sp.search(q="genre:" + genre, limit=n, type="track")['tracks']['items']
+    for song in songs:
+        tracks.append(song['uri'])
+    return tracks
