@@ -11,7 +11,7 @@ import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 let userData = {
   favSongs: [],
   favArtists: [],
-  favGenres: [],
+  favGenres: ["Alternative", "Alternative", "Alternative"],
   activities: [],
   mood: "peaceful",
   name: " ",
