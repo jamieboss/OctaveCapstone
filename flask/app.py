@@ -51,12 +51,19 @@ def user_query():
             matches = esQuery.query(name=song)
             if matches:
                 track_id = matches[0]['uri'].split(':')[-1]
-                if not(track_id in song_results) and numSongs > 0:
-                    song_results[track_id] = []
-                    song_results[track_id].append(matches[0]["name"])
-                    song_results[track_id].append(matches[0]["artist"])
-                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                    numSongs -= 1
+                name = matches[0]["name"]
+                artist = matches[0]["artist"]
+            else:
+                res = sp.search('track:{}'.format(song), type='track', limit=1, market='ES')['tracks']['items'][0]
+                track_id = res['id']
+                name = res['name']
+                artist = res['artists'][0]['name']
+            if not(track_id in song_results) and numSongs > 0:
+                song_results[track_id] = []
+                song_results[track_id].append(name)
+                song_results[track_id].append(artist)
+                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                numSongs -= 1
 
     # gets a list of songs for artists related to the given favorite artists
     artist1 = artistUriDf.loc[artistUriDf['name'] == req['favArtists'][0]]['uri'].item()
