@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 
-from TrackGeneration import artistGeneratedTracks
+from TrackGeneration import artistGeneratedTracks, genreGeneratedTracks
 from SongFeatures import getTracksAudioFeatures
 from KMeans import kMeans, selectCluster
 from SongAnalysis import moodFilterCluster
@@ -13,17 +13,19 @@ file = 'artist-uris.csv'
 artistUriDf = pd.read_csv(os.path.normcase(os.path.join(script_dir, file)))
 
 # this is where we will take input from the web app for liked artists to find similar ones
-steveLacy = "spotify:artist:57vWImR43h4CaDao012Ofp"
-dmx = "spotify:artist:1HwM5zlC5qNWhJtM00yXzG"
-ledZeppelin = "spotify:artist:36QJpDe2go2KgaRleHCDTp"
-duaLipa = "spotify:artist:6M2wZ9GZgrQXHCFfjv46we"
-# steveSongs = artistRelatedTracks(steveLacy)
-dmxSongs, dmxArtists = artistGeneratedTracks(dmx)
-ledSongs, ledArtists = artistGeneratedTracks(ledZeppelin)
-duaSongs, duaArtists = artistGeneratedTracks(duaLipa)
+artist1 = "spotify:artist:57vWImR43h4CaDao012Ofp"
+artist2 = "spotify:artist:1HwM5zlC5qNWhJtM00yXzG"
+artist3 = "spotify:artist:36QJpDe2go2KgaRleHCDTp"
+artist1Songs, artist1Artists = artistGeneratedTracks(artist1)
+artist2Songs, artist2Artists = artistGeneratedTracks(artist2)
+artist3Songs, artist3Artists = artistGeneratedTracks(artist3)
 
-songList = np.unique([*dmxSongs, *ledSongs, *duaSongs])
-artistList = np.unique([*dmxArtists, *ledArtists, *duaArtists])
+genre1Songs = genreGeneratedTracks("rock")
+genre2Songs = genreGeneratedTracks("rap")
+genre3Songs = genreGeneratedTracks("pop")
+
+songList = np.unique([*artist1Songs, *artist2Songs, *artist3Songs, *genre1Songs, *genre2Songs, *genre3Songs])
+# artistList = np.unique([*dmxArtists, *ledArtists, *duaArtists])
 
 # get the audio features of each song in the songlist
 songDf = getTracksAudioFeatures(songList)
@@ -32,7 +34,7 @@ songDf = getTracksAudioFeatures(songList)
 featureLabels = ["danceability", "energy", "loudness", "speechiness", "acousticness", "instrumentalness", "valence", "tempo"]
 clusterDf, numClusters = kMeans(songDf, featureLabels)
 
-# determine what cluster to use based on the activity the user selected
-activitySongs = selectCluster(clusterDf, numClusters, "Studying")
-# filter songs in the selected cluster based on the user selected mood
-moodSongs = moodFilterCluster(activitySongs, 'HAPPY')
+# # determine what cluster to use based on the activity the user selected
+# activitySongs = selectCluster(clusterDf, numClusters, "Studying")
+# # filter songs in the selected cluster based on the user selected mood
+# moodSongs = moodFilterCluster(activitySongs, 'HAPPY')
