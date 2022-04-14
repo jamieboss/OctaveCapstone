@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 from flask import Flask, redirect, jsonify, request, session
 from flask_cors import CORS, cross_origin
 import requests, random
@@ -12,7 +14,18 @@ from SpotifyOAuth import sp
 
 sys.path.append(parent + '\elasticsearch')
 #sys.path.append(parent + '/elasticsearch')
+
 import query
+
+sys.path.append(parent + '\spotify_scripts')
+# sys.path.append(parent + '/spotify_scripts')
+
+from TrackGeneration import artistGeneratedTracks, genreGeneratedTracks
+
+# read in csv file with artist name and uri pairs
+script_dir = os.getcwd()
+file = 'artist-uris.csv'
+artistUriDf = pd.read_csv(os.path.normcase(os.path.join(script_dir, file)), names=['name', 'uri'])
 
 app = Flask(__name__)
 CORS(app)
@@ -38,27 +51,51 @@ def user_query():
             matches = esQuery.query(name=song)
             if matches:
                 track_id = matches[0]['uri'].split(':')[-1]
-                if not(track_id in song_results) and numSongs > 0:
-                    song_results[track_id] = []
-                    song_results[track_id].append(matches[0]["name"])
-                    song_results[track_id].append(matches[0]["artist"])
-                    song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                    numSongs -= 1
+                name = matches[0]["name"]
+                artist = matches[0]["artist"]
+            else:
+                res = sp.search('track:{}'.format(song), type='track', limit=1, market='ES')['tracks']['items'][0]
+                track_id = res['id']
+                name = res['name']
+                artist = res['artists'][0]['name']
+            if not(track_id in song_results) and numSongs > 0:
+                song_results[track_id] = []
+                song_results[track_id].append(name)
+                song_results[track_id].append(artist)
+                song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+                numSongs -= 1
 
-    for artist1 in req['favArtists']:
-        # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
-        # es.search(...) to search for artist via elastic search
-        if len(artist1) > 0:
-            matches = esQuery.query(artist=artist1)
-            if (len(matches) >= 3):
-                for track in random.sample(matches, 3):
-                    track_id = track['uri'].split(':')[-1]
-                    if not(track_id in song_results) and numSongs > 0:
-                        song_results[track_id] = []
-                        song_results[track_id].append(track["name"])
-                        song_results[track_id].append(track["artist"])
-                        song_results[track_id].append("https://open.spotify.com/track/"+track_id)
-                        numSongs -= 1
+    # gets a list of songs for artists related to the given favorite artists
+    artist1 = artistUriDf.loc[artistUriDf['name'] == req['favArtists'][0]]['uri'].item()
+    artist2 = artistUriDf.loc[artistUriDf['name'] == req['favArtists'][1]]['uri'].item()
+    artist3 = artistUriDf.loc[artistUriDf['name'] == req['favArtists'][2]]['uri'].item()
+
+    artist1Songs, artist1Artists = artistGeneratedTracks(artist1)
+    artist2Songs, artist2Artists = artistGeneratedTracks(artist2)
+    artist3Songs, artist3Artists = artistGeneratedTracks(artist3)
+
+    # gets a list of songs for each given genre
+    genre1Songs = genreGeneratedTracks(req['favGenres'][0])
+    genre2Songs = genreGeneratedTracks(req['favGenres'][1])
+    genre3Songs = genreGeneratedTracks(req['favGenres'][2])
+
+    # list of song ids to be queried by elasticsearch
+    songList = np.unique([*artist1Songs, *artist2Songs, *artist3Songs, *genre1Songs, *genre2Songs, *genre3Songs])
+
+    # for artist1 in req['favArtists']:
+    #     # sp.search(hit, type='artist', limit=1, market='ES') to search for artist via spotify
+    #     # es.search(...) to search for artist via elastic search
+    #     if len(artist1) > 0:
+    #         matches = esQuery.query(artist=artist1)
+    #         if (len(matches) >= 3):
+    #             for track in random.sample(matches, 3):
+    #                 track_id = track['uri'].split(':')[-1]
+    #                 if not(track_id in song_results) and numSongs > 0:
+    #                     song_results[track_id] = []
+    #                     song_results[track_id].append(track["name"])
+    #                     song_results[track_id].append(track["artist"])
+    #                     song_results[track_id].append("https://open.spotify.com/track/"+track_id)
+    #                     numSongs -= 1
 
     
     for activity in req['activities']:

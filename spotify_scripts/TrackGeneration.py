@@ -69,7 +69,6 @@ def artistGeneratedTracks(artistId):
                 tracks = albums[i]['tracks']['items']
                 randomTracks = randomTracks + getRandomTracks(tracks)
         else:
-            print("Only one album :(")
             tracks = albums[0]['tracks']['items']
             randomTracks = randomTracks + getRandomTracks(tracks)
 

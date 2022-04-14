@@ -10,7 +10,7 @@ from SongAnalysis import moodFilterCluster
 # read in csv file with artist name and uri pairs
 script_dir = os.getcwd()
 file = 'artist-uris.csv'
-artistUriDf = pd.read_csv(os.path.normcase(os.path.join(script_dir, file)))
+artistUriDf = pd.read_csv(os.path.normcase(os.path.join(script_dir, file)), names=['name', 'uri'])
 
 # this is where we will take input from the web app for liked artists to find similar ones
 artist1 = "spotify:artist:57vWImR43h4CaDao012Ofp"
