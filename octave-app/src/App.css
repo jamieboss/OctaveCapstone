@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .App-header {
@@ -26,10 +27,16 @@
 
 h2, h3{
   padding-top: 36px;
+  color: rgb(2, 75, 2);
 }
 
 h4 {
   padding-top: 12px;
+  color: rgb(2, 75, 2);
+}
+
+h5 {
+  color: rgb(2, 75, 2);
 }
 
 .FavSongs {
@@ -50,7 +57,7 @@ h4 {
 
 .FavGenres {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
+  grid-template-columns: repeat(3, 110px);
   grid-column-gap: 30px;
   grid-row-gap: 12px;
   justify-content: center;
@@ -81,6 +88,7 @@ ul {
 li {
   display: inline-block;
   list-style-type: none;
+  color:rgb(2, 75, 2)
 }
 
 a {

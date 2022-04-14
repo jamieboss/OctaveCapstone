@@ -11,7 +11,7 @@ import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 let userData = {
   favSongs: [],
   favArtists: [],
-  favGenres: [],
+  favGenres: ["Alternative", "Alternative", "Alternative"],
   activities: [],
   mood: "peaceful",
   name: " ",
@@ -23,6 +23,8 @@ let likes = {
   keys: []
 }
 
+/*
+** List of genres stored within dropdown
 let genres = [
   "Alternative",
   "Blues",
@@ -37,7 +39,7 @@ let genres = [
   "R&B",
   "Rock"
 ]
-
+*/
 let postResponsemessage = ""
 let postResponse = {}
 let playlistUrl = ""
@@ -68,6 +70,7 @@ function collectData() {
 }
 
 function openPopup(response) {
+  /*
   if(response) {
     postResponsemessage = "Success! Connected to Flask."
     postResponse=response.result;
@@ -75,12 +78,15 @@ function openPopup(response) {
   }else{
     postResponsemessage = "Error: could not connect to Flask.";
   }
+  */
   var modal = document.getElementById("myModal");
-  modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
+  //modal.firstChild.childNodes[2].textContent = JSON.stringify(userData)
   modal.firstChild.childNodes[3].textContent = postResponsemessage
   modal.style.display = "block";
 }
 
+/*
+** Test Function to display user input
 function displayOutput(){
   var i = 0
   for (const key in postResponse) {
@@ -91,7 +97,7 @@ function displayOutput(){
     i++
   }
 }
-
+*/
 function openPopup2(response) {
   if(response) {
     playlistUrl=response.message
@@ -130,6 +136,8 @@ function generatePlaylist() {
   .catch(error => openPopup(error))
 }
 
+/*
+** Helper function to quickly build dropdown of genres
 function buildGenres(num) {
   var model = document.getElementById("FavGenres");
   var elem = model.childNodes.item(num)
@@ -137,7 +145,7 @@ function buildGenres(num) {
       elem.innerHTML += "<option value=\"" + genres[i] + "\">" + genres[i] + "</option>";
   }
 }
-
+*/
 function min(val, min, max) {
   if (val > max) {
     return max;
@@ -165,10 +173,6 @@ function validate(text) {
   return text;
 }
 
-function clean(text) {
-  
-}
-
 function App() {
 
   return (
@@ -180,14 +184,14 @@ function App() {
       <h5 className="intro">Welcome to Octave, a custom Spotify playlist generator based on your favorite music, current activities, and moods you want to feel. To get started, tell as about yourself. What are some of your...</h5>
       
       <form id="favorites">
-        <h3>Favorite Songs</h3>
+        <h3>Favorite Songs:</h3>
         <div className = "FavSongs" id = "FavSongs">
           <input maxlength = "25" onChange={(event) => userData.favSongs[0] = validate(event.target.value)} id="favSong1"></input>
           <input maxlength = "25" onChange={(event) => userData.favSongs[1] = validate(event.target.value)} id="favSong2"></input>
           <input maxlength = "25" onChange={(event) => userData.favSongs[2] = validate(event.target.value)} id="favSong3"></input>
         </div> 
 
-        <h3>Favorite Artists</h3>
+        <h3>Favorite Artists:</h3>
         <div className = "FavArtists" id = "FavArtists">
           <input maxlength = "25" onChange={(event) => userData.favArtists[0] = validate(event.target.value)} id="favGenre1"></input>
           <input maxlength = "25" onChange={(event) => userData.favArtists[1] = validate(event.target.value)} id="favGenre2"></input>
@@ -195,7 +199,7 @@ function App() {
         </div>
       </form>
               
-        <h3>Favorite Genres</h3>
+        <h3>Favorite Genres:</h3>
         <div className = "FavGenres" id = "FavGenres">
           <select onChange={(event) => userData.favGenres[0] = event.target.value} name="genre1" id="genre1">
             <option value="Alternative">Alternative</option>
@@ -262,22 +266,23 @@ function App() {
             <input maxlength = "25" onChange={(event) => userData.name = validate(event.target.value)}></input>
           </li>
           <li>
-            <h4>Number of Songs(10-99):</h4>
+            <h4>Playlist Length:</h4>
             <input type = "number" min = "10" max = "99" onChange={(event) => userData.number = min(event.target.value, 10, 99)}></input>
           </li>
         </ul>
 
       <div className = "Generate">
+        <h5>Once you enter your preferences, click the button below!</h5>
         <button onClick={collectData}>Generate Playlist</button>
       </div>
 
       <div id="myModal" className="modal">
         <div className="modal-content">
           <span className="close" onClick={()=> closePopup("myModal")}>&times;</span>
-          <h4>User Data</h4>
+          <h4>Your playlist is almost ready!</h4>
           <p></p>
           <p></p>
-          <h4>Do you like these songs?</h4>
+          <h5>Do you like these songs?</h5>
           <div id="myResult" className="result">
             <ul>
               <li><a href="test.com" target="_blank">Test1</a><div class="rating">
