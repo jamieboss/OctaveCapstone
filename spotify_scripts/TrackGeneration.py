@@ -2,7 +2,7 @@ import random
 import numpy as np
 from SpotifyOAuth import sp
 
-NUM_INIT_ARTISTS = 5
+NUM_INIT_ARTISTS = 2
 NUM_ALBUMS_ARTIST = 2
 NUM_TRACKS_ALBUM = 4
 
@@ -76,7 +76,7 @@ def artistGeneratedTracks(artistId):
     return np.unique(np.array(randomTracks)), relatedArtistIds
 
 # given a genre return a list of n tracks in that given genre
-def genreGeneratedTracks(genre, n = 10):
+def genreGeneratedTracks(genre, n = 5):
     tracks = []
     songs = sp.search(q="genre:" + genre, limit=n, type="track")['tracks']['items']
     for song in songs:
