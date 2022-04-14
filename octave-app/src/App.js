@@ -38,6 +38,10 @@ let genres = [
   "Rock"
 ]
 
+let currentResponse = {}
+let currentKey = []
+let likesIndex = 0
+
 let postResponsemessage = ""
 let postResponse = {}
 let playlistUrl = ""
@@ -52,14 +56,11 @@ function collectData() {
   //Get mood
   userData.mood = document.getElementsByClassName("Mood")[0].innerHTML;
 
-  //Make sure likes/dislikes are unselected
-  document.getElementById("like0").classList.remove("active")
-  document.getElementById("dislike0").classList.remove("active")
-  document.getElementById("like1").classList.remove("active")
-  document.getElementById("dislike1").classList.remove("active")
-  document.getElementById("like2").classList.remove("active")
-  document.getElementById("dislike2").classList.remove("active")
+  //Get mood
+  userData.number = document.getElementsByClassName("songs_number").value;
+
   likes.songs = []
+  likes.keys = []
 
   //Send to flask
   APIService.InsertQuery(userData)
@@ -71,6 +72,7 @@ function openPopup(response) {
   if(response) {
     postResponsemessage = "Success! Connected to Flask."
     postResponse=response.result;
+    saveResponse(postResponse);
     displayOutput();
   }else{
     postResponsemessage = "Error: could not connect to Flask.";
@@ -81,15 +83,51 @@ function openPopup(response) {
   modal.style.display = "block";
 }
 
+function saveResponse(response) {
+	currentResponse = {}
+	currentKey = []
+	document.getElementById("moreSongsButton").childNodes[0].style.visibility = 'visible'
+	for (let j = 0;  j < 3; j++) {
+		document.getElementById("myResult").childNodes[0].childNodes[j].childNodes[0].style.visibility = 'visible'
+		document.getElementById("like" + j).style.visibility = 'visible'
+		document.getElementById("dislike" + j).style.visibility = 'visible'
+	}
+	var i = 0
+	for (const key in postResponse) {
+		currentResponse[i] = response[key]
+		currentKey[i] = key
+		i++
+	}
+	likesIndex = 0;
+}
+
 function displayOutput(){
-  var i = 0
-  for (const key in postResponse) {
-    if (i > 2) {break}
-    document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].textContent = postResponse[key][0] + ', ' + postResponse[key][1]
-    document.getElementById("myResult").childNodes[0].childNodes[i].childNodes[0].href = postResponse[key][2]
-    likes.keys[i] = key
-    i++
+  console.log(likesIndex)
+  console.log(currentKey.length)
+
+  //Make sure likes/dislikes are unselected
+  for (let i=0; i<3; i++) {
+    	document.getElementById("like" + i).classList.remove("active");
+  	document.getElementById("dislike" + i).classList.remove("active");
   }
+ 
+
+  for (let i = likesIndex; i < likesIndex + 3; i++) {
+	if (i < currentKey.length) {
+		document.getElementById("myResult").childNodes[0].childNodes[i%3].childNodes[0].textContent = currentResponse[i][0] + ', ' + currentResponse[i][1]
+    		document.getElementById("myResult").childNodes[0].childNodes[i%3].childNodes[0].href = currentResponse[i][2]
+    		likes.keys[i] = currentKey[i]
+	} else {
+		document.getElementById("myResult").childNodes[0].childNodes[i%3].childNodes[0].style.visibility = 'hidden'
+		document.getElementById("like" + i%3).style.visibility = 'hidden'
+		document.getElementById("dislike" + i%3).style.visibility = 'hidden'
+	}
+  }
+  likesIndex += 3
+  if (likesIndex > currentKey.length - 1) {
+	document.getElementById("moreSongsButton").childNodes[0].style.visibility = 'hidden'
+  }
+  
 }
 
 function openPopup2(response) {
@@ -108,18 +146,18 @@ function closePopup(id) {
 }
 
 function setLike(i) {
-  likes.songs[i] = 1
+  likes.songs[i + likesIndex - 3] = 1
   document.getElementById("like"+i).classList.add("active")
   document.getElementById("dislike"+i).classList.remove("active")
 }
 function setDislike(i) {
-  likes.songs[i] = 0
+  likes.songs[i + likesIndex - 3] = 0
   document.getElementById("like"+i).classList.remove("active")
   document.getElementById("dislike"+i).classList.add("active")
 }
 
 function generatePlaylist() {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < currentKey.length; i++) {
     if (likes.songs[i] === 0) {
       delete postResponse[likes.keys[i]]
     }
@@ -262,7 +300,7 @@ function App() {
           </li>
           <li>
           <h4>Number of songs (10-99):</h4>
-          <input type = "number" min = "10" max = "99" onChange={(event) => userData.number = min(event.target.value, 10, 99)}></input>
+          <input type = "number" min = "10" max = "99" id = "songs_number" onChange={(event) => userData.number = min(event.target.value, 10, 99)}></input>
           </li>
         </ul>
 
@@ -293,6 +331,9 @@ function App() {
               </div></li>
             </ul>
           </div>
+	  <div id="moreSongsButton">
+	  	<button onClick={displayOutput}>Show more songs!</button>
+	  </div>
           <button onClick={generatePlaylist}>Continue</button>
         </div>
       </div>

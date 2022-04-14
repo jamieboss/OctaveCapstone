@@ -46,7 +46,8 @@ def user_query():
         # es.search(...) to search for artist via elastic search
         if len(artist1) > 0:
             matches = esQuery.query(artist=artist1)
-            for track in random.sample(matches[:25], 3):
+            numberOfTracks = min(3, len(matches))
+            for track in random.sample(matches, numberOfTracks):
                 track_id = track['uri'].split(':')[-1]
                 song_results[track_id] = []
                 song_results[track_id].append(track["name"])
@@ -95,4 +96,4 @@ def playlist_query():
     return jsonify(message=playlistLink)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="8080", debug=True)
+    app.run(host="0.0.0.0", port="5000", debug=True)
