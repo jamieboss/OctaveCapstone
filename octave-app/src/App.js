@@ -14,7 +14,7 @@ let userData = {
   favGenres: [],
   activities: [],
   mood: "peaceful",
-  name: " ",
+  name: "Octave Playlist",
   number: 20
 }
 
