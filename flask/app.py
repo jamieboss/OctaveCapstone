@@ -55,10 +55,11 @@ def user_query():
                 name = matches[0]["name"]
                 artist = matches[0]["artist"]
             else:
-                res = sp.search('track:{}'.format(song), type='track', limit=1, market='ES')['tracks']['items'][0]
-                track_id = res['id']
-                name = res['name']
-                artist = res['artists'][0]['name']
+                res = sp.search('track:{}'.format(song), type='track', limit=1, market='ES')['tracks']['items']
+                if res:
+                    track_id = res[0]['id']
+                    name = res[0]['name']
+                    artist = res[0]['artists'][0]['name']
             if not(track_id in song_results) and numSongs > 0:
                 song_results[track_id] = []
                 song_results[track_id].append(name)
@@ -107,10 +108,10 @@ def user_query():
             song_results[track_id].append("https://open.spotify.com/track/"+track_id)
             numSongs -= 1
 
-    # gets a list of songs for artists related to the given favorite artists
-    artist1 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].item() if len(req['favArtists']) > 0 else []
-    artist2 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].item() if len(req['favArtists']) > 1 else []
-    artist3 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].item() if len(req['favArtists']) > 2 else []
+    # gets a list of songs for artists related to the given favorite artists if it exists in our knowledge base (csv file)
+    artist1 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].item() if len(req['favArtists']) > 0 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].empty) else []
+    artist2 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].item() if len(req['favArtists']) > 1 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].empty) else []
+    artist3 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].item() if len(req['favArtists']) > 2 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].empty) else []
 
     artist1Songs = []
     artist2Songs = []
