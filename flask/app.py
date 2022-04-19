@@ -109,9 +109,9 @@ def user_query():
             numSongs -= 1
 
     # gets a list of songs for artists related to the given favorite artists if it exists in our knowledge base (csv file)
-    artist1 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].item() if len(req['favArtists']) > 0 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].empty) else []
-    artist2 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].item() if len(req['favArtists']) > 1 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].empty) else []
-    artist3 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].item() if len(req['favArtists']) > 2 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].empty) else []
+    artist1 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].iloc[0] if len(req['favArtists']) > 0 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][0].lower()]['uri'].empty) else []
+    artist2 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].iloc[0] if len(req['favArtists']) > 1 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][1].lower()]['uri'].empty) else []
+    artist3 = artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].iloc[0] if len(req['favArtists']) > 2 and not(artistUriDf.loc[artistUriDf['name'].str.lower() == req['favArtists'][2].lower()]['uri'].empty) else []
 
     artist1Songs = []
     artist2Songs = []
