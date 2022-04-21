@@ -35,7 +35,7 @@ def artistGeneratedTracks(artistId):
     # random depth search for related artists to possibly find unlistened to music
     mostSimilarArtists = getRelatedArtists(artistId, 0, NUM_INIT_ARTISTS)
     # create a depth map for how deep we will search for each artist
-    artistDepths = [random.randint(0,2) for i in range(len(mostSimilarArtists))]
+    artistDepths = [random.randint(0,1) for i in range(len(mostSimilarArtists))]
     # list of ids for all of the related artists
     relatedArtistIds = [artist['id'] for artist in mostSimilarArtists]
 
